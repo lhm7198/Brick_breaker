@@ -17,7 +17,13 @@ Game::Game(int w, int h){
 	// Players
 
 	// Bricks
-
+	brick_width = w * 0.09;
+	brick_height = h * 0.04;
+	gap = ((w / 11) / 13) * 1.5;
+	for(int i=0; i<10; i++){
+		bricks.push_back(Brick(brick_width, brick_height, gap + i*(brick_width+gap), gap + window.getSize().y*0.11));
+	}
+	
 	// Window
 	window.create(sf::VideoMode(w, h), "3-codiots");
 	window.setFramerateLimit(60);
@@ -40,6 +46,10 @@ void Game::gameStart(){
 		window.display();
 	}
 
+	gameRunning();
+}
+
+void Game::gameRunning(){
 	while(window.isOpen()){
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed){
@@ -47,8 +57,13 @@ void Game::gameStart(){
 			}
 		}
 
-		window.clear(sf::Color::White);
-
+		draw();
 		window.display();
+	}
+}
+
+void Game::draw(){
+	for(int i=0; i<bricks.size(); i++){
+		window.draw(bricks[i]);
 	}
 }

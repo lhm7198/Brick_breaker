@@ -10,7 +10,8 @@
 #define GAMERUNNER_H
 
 #include <SFML/Graphics.hpp>
-//#include "Brick.h"
+#include <vector>
+#include "Brick.h"
 
 class Game{
 private:
@@ -21,10 +22,13 @@ private:
 /*	// Players
 	Player player1;
 	Player player2;
-
-	// Bricks
-	vector<Brick> bricks;
 */
+	// Bricks
+	float brick_width;
+	float brick_height;
+	float gap;
+	std::vector<Brick> bricks;
+
 	// Event
 	sf::Event event;
 
@@ -34,6 +38,10 @@ public:
 	Game(int w, int h);
 
 	void gameStart();
+	
+	void gameRunning();
+
+	void draw();
 };
 
 #endif

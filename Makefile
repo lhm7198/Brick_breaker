@@ -1,5 +1,5 @@
 TARGET	=	3-codiots 
-OBJECT	= 	main.o GameRunner.o
+OBJECT	= 	main.o GameRunner.o Brick.o
 CC	=	g++
 
 # directory
@@ -13,6 +13,9 @@ main.o 		:	main.cpp
 	$(CC) -c $< -I INCLUDE_DIR
 
 GameRunner.o	:	GameRunner.cpp
+	$(CC) -c $< -I INCLUDE_DIR
+
+Brick.o		:	Brick.cpp
 	$(CC) -c $< -I INCLUDE_DIR
 
 clean	:
