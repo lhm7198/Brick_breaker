@@ -11,8 +11,8 @@
 #include "GameRunner.h"
 
 int main(){
-	int Screen_Width = 800;
-	int Screen_Height = 480;
+	int Screen_Width = 480;
+	int Screen_Height = 800;
 
 	Game game(Screen_Width, Screen_Height);
 

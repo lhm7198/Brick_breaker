@@ -10,7 +10,7 @@
 
 Brick::Brick(float w, float h, float x, float y){
 	setSize(sf::Vector2f(w, h));
-	setFillColor(sf::Color::Red);
+	setFillColor(sf::Color(255, 0, 0));
 	setPosition(x, y);
 
 	deleted = false;

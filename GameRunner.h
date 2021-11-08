@@ -12,13 +12,22 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Brick.h"
+#include "Ball.h"
+#include "Paddle.h"
 
 class Game{
 private:
+	// const variable
+	const int BRICKS_PER_ROW = 12;
+	const float BALL_RADIUS = 4;
+	const float PADDLE_SPEED = 7.5;
+	
+	// variable
+	float gap;
 	int screen_width;
 	int screen_height;
-
 	bool is_start_page;
+
 /*	// Players
 	Player player1;
 	Player player2;
@@ -26,8 +35,20 @@ private:
 	// Bricks
 	float brick_width;
 	float brick_height;
-	float gap;
-	std::vector<Brick> bricks;
+	std::vector<Brick> p1_bricks;
+	std::vector<Brick> p2_bricks;
+
+	// Ball
+	float ball_radius;
+	std::vector<Ball> balls;
+
+	// Paddle
+	float paddle_width;
+	float paddle_height;
+	float p1_paddle_speed;
+	float p2_paddle_speed;
+	std::vector<Paddle> p1_paddles;
+	std::vector<Paddle> p2_paddles;
 
 	// Event
 	sf::Event event;
@@ -40,6 +61,8 @@ public:
 	void gameStart();
 	
 	void gameRunning();
+
+	void receiveKeyinputs();
 
 	void draw();
 };
