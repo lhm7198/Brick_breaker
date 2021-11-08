@@ -1,28 +1,33 @@
-TARGET	=	3-codiots 
-OBJECT	= 	main.o GameRunner.o Brick.o Ball.o Paddle.o
+TARGET	=	3-codiots
 CC	=	g++
+LINKER	=	g++
 
 # directory
+SRCDIR		=	src
+OBJDIR		=	obj
+BINDIR		=	bin
 INCLUDE_DIR	=	/home/lhm7198/SFML/SFML-2.5.1/include/
 LIBS		=	-lsfml-graphics -lsfml-window -lsfml-system
 
-$(TARGET) 	:	$(OBJECT)
-	$(CC) -o $@ $^ $(LIBS)
+SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
+INCLUDES := $(wildcard $(SRCDIR)/*.h)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+rm        = rm -f
 
-main.o 		:	main.cpp
-	$(CC) -c $< -I INCLUDE_DIR
+$(BINDIR)/$(TARGET) : $(OBJECTS)
+	@$(LINKER) $(OBJECTS) -o $@ $(LIBS)
+	@echo "Linking complete!"
 
-GameRunner.o	:	GameRunner.cpp
-	$(CC) -c $< -I INCLUDE_DIR
+$(OBJECTS) : $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+	@$(CC) -c $< -o $@ -I INCLUDE_DIR
+	@echo "Compiled "$<" successfully!"
 
-Brick.o		:	Brick.cpp
-	$(CC) -c $< -I INCLUDE_DIR
+.PHONY: clean
+clean:
+	@$(rm) $(OBJECTS)
+	@echo "Cleanup complete!"
 
-Ball.o		:	Ball.cpp
-	$(CC) -c $< -I INCLUDE_DIR
-
-Paddle.o	:	Paddle.cpp
-	$(CC) -c $< -I INCLUDE_DIR
-
-clean	:
-	rm -f *.o 3-codiots
+.PHONY: remove
+remove: clean
+	@$(rm) $(BINDIR)/$(TARGET)
+	@echo "Executable removed!"
