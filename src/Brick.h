@@ -13,11 +13,23 @@
 
 class Brick : public sf::RectangleShape{
 private:
+	float brick_width; 
+	float brick_height;
+	float brick_x; 
+	float brick_y;
 	bool deleted;
 	
 	// item, hp, color
 public:
-	Brick(float w, float h, float x, float y);
+	Brick();
+
+	float get_Brick_width();
+	float get_Brick_height();
+	float get_Brick_x();
+	float get_Brick_y();
+
+	void set_Brick_size(float brick_width_, float brick_height_);
+	void set_Brick_position(float brick_x_, float brick_y_);
 };
 
 #endif

@@ -8,11 +8,29 @@
 
 #include "Brick.h"
 
-Brick::Brick(float w, float h, float x, float y){
-	setSize(sf::Vector2f(w, h));
-	setFillColor(sf::Color(255, 0, 0));
-	setPosition(x, y);
-
+Brick::Brick(){
+	brick_width = 0;
+	brick_height = 0;
 	deleted = false;
 };
 
+float Brick::get_Brick_width(){
+	return brick_width;
+}
+float Brick::get_Brick_height(){
+	return brick_height;
+}
+float Brick::get_Brick_x(){
+	return this->getPosition().x;
+}
+float Brick::get_Brick_y(){
+	return this->getPosition().y;
+}
+
+void Brick::set_Brick_size(float brick_width_, float brick_height_){
+	this->setSize(sf::Vector2f(brick_width_, brick_height_));
+	this->setFillColor(sf::Color(255, 0, 0));
+}
+void Brick::set_Brick_position(float brick_x_, float brick_y_){
+	this->setPosition(brick_x_, brick_y_);
+}
