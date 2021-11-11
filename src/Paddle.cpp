@@ -9,9 +9,11 @@
 #include "Paddle.h"
 
 Paddle::Paddle(){
-	float paddle_width = 0;
-	float paddle_height = 0;
-	float paddle_speedX = 0;
+	paddle_width = 0;
+	paddle_height = 0;
+	paddle_speedX = 0;
+	is_paddle_move_right = false;
+	is_paddle_move_left = false;
 };
 
 float Paddle::get_Paddle_width(){
@@ -41,4 +43,23 @@ void Paddle::set_Paddle_position(float paddle_x_, float paddle_y_){
 }
 void Paddle::set_Paddle_speedX(float paddle_speedX_){
 	paddle_speedX = paddle_speedX_;
+}
+void Paddle::set_Paddle_move_right(bool is_paddle_move_right_){
+	is_paddle_move_right = is_paddle_move_right_;
+}
+void Paddle::set_Paddle_move_left(bool is_paddle_move_left_){
+	is_paddle_move_left = is_paddle_move_left_;
+}
+
+void Paddle::Paddle_move(int screen_width, int screen_height){
+	if(is_paddle_move_right){
+		if(this->get_Paddle_x() < screen_width - this->get_Paddle_width()){
+			this->move(paddle_speedX, 0);
+		}
+	}
+	else if(is_paddle_move_left){
+		if(this->get_Paddle_x() > 0){
+			this->move(-paddle_speedX, 0);
+		}
+	}
 }

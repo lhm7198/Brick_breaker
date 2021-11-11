@@ -112,7 +112,10 @@ void Game::gameRunning(){
 		}
 
 		if(is_game_start){
-			balls[0].Ball_move(screen_width, screen_height);
+			balls[0].Ball_move(screen_width, screen_height); // ball move
+
+			p1_paddle[0].Paddle_move(screen_width, screen_height); // player1 paddle move
+			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
 		}
 
 		object_draw();
@@ -121,20 +124,25 @@ void Game::gameRunning(){
 }
 
 void Game::receiveKeyinputs(){
+	float p1_paddle_speed;
 	float p2_paddle_speed;
 	if(event.type == sf::Event::KeyPressed){
 		switch(event.key.code){
+			case sf::Keyboard::A:
+				p1_paddle[0].set_Paddle_move_left(true);
+				p1_paddle[0].set_Paddle_move_right(false);
+				break;
+			case sf::Keyboard::D:
+				p1_paddle[0].set_Paddle_move_left(false);
+				p1_paddle[0].set_Paddle_move_right(true);
+				break;
 			case sf::Keyboard::Left:
-				if(p2_paddle[0].get_Paddle_x() > 0){
-					p2_paddle_speed = p2_paddle[0].get_Paddle_speedX();
-					p2_paddle[0].move(-p2_paddle_speed, 0);
-				}
+				p2_paddle[0].set_Paddle_move_left(true);
+				p2_paddle[0].set_Paddle_move_right(false);
 				break;
 			case sf::Keyboard::Right:
-				if(p2_paddle[0].get_Paddle_x() < screen_width - p2_paddle[0].get_Paddle_width()){
-					p2_paddle_speed = p2_paddle[0].get_Paddle_speedX();
-					p2_paddle[0].move(p2_paddle_speed, 0);
-				}
+				p2_paddle[0].set_Paddle_move_left(false);
+				p2_paddle[0].set_Paddle_move_right(true);
 				break;
 			case sf::Keyboard::Return:
 				is_game_start = true;
