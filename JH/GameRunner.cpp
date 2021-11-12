@@ -112,7 +112,7 @@ void Game::gameRunning(){
 		}
 
 		if(is_game_start){
-			balls[0].Ball_move(screen_width, screen_height, p2_paddle[0]);
+			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]);
 		}
 
 		object_draw();

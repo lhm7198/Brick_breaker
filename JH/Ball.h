@@ -31,7 +31,7 @@ public:
 	void set_Ball_speedX(float ball_speedX_);
 	void set_Ball_speedY(float ball_speedX_);
 
-	void Ball_move(int screen_width, int screen_height, Paddle& p2);
+	void Ball_move(int screen_width, int screen_height, Paddle& p1, Paddle& p2);
 };
 
 #endif

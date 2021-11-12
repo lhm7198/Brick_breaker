@@ -43,7 +43,7 @@ void Ball::set_Ball_speedY(float ball_speedY_){
 	ball_speedY = ball_speedY_;
 }
 
-void Ball::Ball_move(int screen_width, int screen_height, Paddle& p2){
+void Ball::Ball_move(int screen_width, int screen_height, Paddle& p1, Paddle& p2){
 	this->move(ball_speedX, ball_speedY);
 	if(this->get_Ball_x() < 0){
 		this->set_Ball_speedX(-ball_speedX);
@@ -57,6 +57,11 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle& p2){
 	}
 	else if(this->get_Ball_y() > screen_height){
 		this->set_Ball_speedY(-ball_speedY);
+	}
+
+	if((this->get_Ball_y() - p1.get_Paddle_y() > 15) && (this->get_Ball_y() - p1.get_Paddle_y() < 20)){
+		if((this->get_Ball_x() > p1.get_Paddle_x()) && (this->get_Ball_x() < p1.get_Paddle_x() + 96))
+			this->set_Ball_speedY(-ball_speedY);
 	}
 
 	if((p2.get_Paddle_y() - this->get_Ball_y() > 15) && (p2.get_Paddle_y() - this->get_Ball_y() < 20)){
