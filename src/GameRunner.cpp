@@ -112,7 +112,7 @@ void Game::gameRunning(){
 		}
 
 		if(is_game_start){
-			balls[0].Ball_move(screen_width, screen_height); // ball move
+			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball move
 
 			p1_paddle[0].Paddle_move(screen_width, screen_height); // player1 paddle move
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move

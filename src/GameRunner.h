@@ -20,8 +20,8 @@ private:
 	// initial value
 	const int BRICKS_PER_ROW = 12;
 	const float BALL_RADIUS = 6;
-	const float PADDLE_SPEED = 7.5;
-	const float BALL_SPEED = 5.0;
+	const float PADDLE_SPEED = 5.0;
+	const float BALL_SPEED = 3.5;
 	
 	// variable
 	int screen_width;
