@@ -7,6 +7,7 @@
 */
 
 #include "GameRunner.h"
+#include "stdio.h"
 
 void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start, sf::Font* font1, sf::Font* font2);
 
@@ -56,13 +57,20 @@ Game::Game(int w, int h){
 	paddle2.set_Paddle_speedX(PADDLE_SPEED);
 	p2_paddle.push_back(paddle2);
 
-	// Ball
-	Ball ball;
-	ball.set_Ball_size(BALL_RADIUS);
-	ball.set_Ball_speedX(BALL_SPEED);
-	ball.set_Ball_speedY(-BALL_SPEED);
-	ball.set_Ball_position(w*0.5 - BALL_RADIUS, h*0.5 - BALL_RADIUS);
-	balls.push_back(ball);
+	// Balls
+	Ball ball1; // ball1
+	ball1.set_Ball_size(BALL_RADIUS);
+	ball1.set_Ball_speedX(BALL_SPEED);
+	ball1.set_Ball_speedY(-BALL_SPEED);
+	ball1.set_Ball_position(w*0.3 - BALL_RADIUS, h*0.5 - BALL_RADIUS);
+	balls.push_back(ball1);
+
+	Ball ball2; // ball2
+	ball2.set_Ball_size(BALL_RADIUS);
+	ball2.set_Ball_speedX(-BALL_SPEED);
+	ball2.set_Ball_speedY(BALL_SPEED);
+	ball2.set_Ball_position(w*0.7 - BALL_RADIUS, h*0.5 - BALL_RADIUS);
+	balls.push_back(ball2);
 	
 	// Window
 	window.create(sf::VideoMode(w, h), "3-codiots");
@@ -112,10 +120,10 @@ void Game::gameRunning(){
 		}
 
 		if(is_game_start){
-			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball move
-
 			p1_paddle[0].Paddle_move(screen_width, screen_height); // player1 paddle move
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
+			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball1 move
+			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball2 move
 		}
 
 		object_draw();
@@ -167,7 +175,7 @@ void Game::object_draw(){
 	for(int i=0; i<p2_paddle.size(); i++){ // player2 paddle
 		window.draw(p2_paddle[i]);
 	}
-	for(int i=0; i<balls.size(); i++){ // ball
+	for(int i=0; i<balls.size(); i++){ // balls
 		window.draw(balls[i]);
 	}
 }
