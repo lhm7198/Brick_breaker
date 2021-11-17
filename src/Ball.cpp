@@ -59,13 +59,30 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle& p1, Paddle& p2
 		this->set_Ball_speedY(-ball_speedY);
 	}
 
-	if((this->get_Ball_y() - p1.get_Paddle_y() > 15) && (this->get_Ball_y() - p1.get_Paddle_y() < 20)){
-		if((this->get_Ball_x() > p1.get_Paddle_x()) && (this->get_Ball_x() < p1.get_Paddle_x() + 96))
-			this->set_Ball_speedY(-ball_speedY);
-	}
+	if(get_Ball_speedY()<0){
+		if((this->get_Ball_y() - p1.get_Paddle_y() > 0) && (this->get_Ball_y() - p1.get_Paddle_y() < 5)){
+			if((this->get_Ball_x() > p1.get_Paddle_x()) && (this->get_Ball_x() < p1.get_Paddle_x() + 96)){
+				this->set_Ball_speedY(-ball_speedY);
+			}
+		}
+		if((p2.get_Paddle_y() - this->get_Ball_y() > -7) && (p2.get_Paddle_y() - this->get_Ball_y() < -2)){
+			if((this->get_Ball_x() > p2.get_Paddle_x()) && (this->get_Ball_x() < p2.get_Paddle_x() + 96)){
+				this->set_Ball_speedY(-ball_speedY);
+			}
+		}
 
-	if((p2.get_Paddle_y() - this->get_Ball_y() > 15) && (p2.get_Paddle_y() - this->get_Ball_y() < 20)){
-		if((this->get_Ball_x() > p2.get_Paddle_x()) && (this->get_Ball_x() < p2.get_Paddle_x() + 96))
-			this->set_Ball_speedY(-ball_speedY);
+	}
+	else{
+		if((this->get_Ball_y() - p1.get_Paddle_y() > -7) && (this->get_Ball_y() - p1.get_Paddle_y() < -2)){
+			if((this->get_Ball_x() > p1.get_Paddle_x()) && (this->get_Ball_x() < p1.get_Paddle_x() + 96)){
+				this->set_Ball_speedY(-ball_speedY);
+			}
+		}
+		if((p2.get_Paddle_y() - this->get_Ball_y() > 0) && (p2.get_Paddle_y() - this->get_Ball_y() < 5)){
+			if((this->get_Ball_x() > p2.get_Paddle_x()) && (this->get_Ball_x() < p2.get_Paddle_x() + 96)){
+				this->set_Ball_speedY(-ball_speedY);
+			}
+		}
+
 	}
 }
