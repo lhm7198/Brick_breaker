@@ -1,11 +1,10 @@
 /*
-*	SW3 (SSE2034-41) Term Project
-*	
-*	Briefly explain : Declare game object
-*
-*	Copyright 2021 by 3-codiots
-*/
-
+ *	SW3 (SSE2034-41) Term Project
+ *	
+ *	Briefly explain : Declare game object
+ *
+ *	Copyright 2021 by 3-codiots
+ */
 #include "GameRunner.h"
 #include "stdio.h"
 
@@ -26,19 +25,21 @@ Game::Game(int w, int h){
 	gap = (w - BRICKS_PER_ROW*brick_width) / (BRICKS_PER_ROW + 1);
 	p1_bricks_num = BRICKS_PER_ROW;
 	p2_bricks_num = BRICKS_PER_ROW;
-
-	for(int i=0; i<BRICKS_PER_ROW; i++){ // player1 bricks
-		Brick brick;
-		brick.set_Brick_size(brick_width, brick_height);
-		brick.set_Brick_position(gap + i*(brick_width+gap), gap);
-		p1_bricks.push_back(brick);
+	for(int i=0; i<BRICKS_PER_COL ; i++){
+		for(int j=0; j<BRICKS_PER_ROW; j++){ // player1 bricks
+			Brick brick;
+			brick.set_Brick_size(brick_width, brick_height);
+			brick.set_Brick_position(gap + j*(brick_width+gap), i*(gap+brick_height));
+			p1_bricks.push_back(brick);
+		}
 	}
-
-	for(int i=0; i<BRICKS_PER_ROW; i++){ // player2 bricks
-		Brick brick;
-		brick.set_Brick_size(brick_width, brick_height);
-		brick.set_Brick_position(gap + i*(brick_width+gap), h - gap - brick_height);
-		p2_bricks.push_back(brick);
+	for(int i=0; i<BRICKS_PER_COL ; i++){
+		for(int j=0; j<BRICKS_PER_ROW; j++){ // player2 bricks
+			Brick brick;
+			brick.set_Brick_size(brick_width, brick_height);
+			brick.set_Brick_position(gap + j*(brick_width+gap), h - gap - brick_height-i*(gap+brick_height));
+			p2_bricks.push_back(brick);
+		}
 	}
 
 	// Paddles
@@ -47,13 +48,13 @@ Game::Game(int w, int h){
 
 	Paddle paddle1; // player1 paddle
 	paddle1.set_Paddle_size(paddle_width, paddle_height);
-	paddle1.set_Paddle_position(w*0.5 - paddle_width/2, h*0.05);
+	paddle1.set_Paddle_position(w*0.5 - paddle_width/2, h*0.2);
 	paddle1.set_Paddle_speedX(PADDLE_SPEED);
 	p1_paddle.push_back(paddle1);
 
 	Paddle paddle2; // player2 paddle
 	paddle2.set_Paddle_size(paddle_width, paddle_height);
-	paddle2.set_Paddle_position(w*0.5 - paddle_width/2, h*0.95 - paddle_height);
+	paddle2.set_Paddle_position(w*0.5 - paddle_width/2, h*0.8 - paddle_height);
 	paddle2.set_Paddle_speedX(PADDLE_SPEED);
 	p2_paddle.push_back(paddle2);
 
@@ -71,7 +72,7 @@ Game::Game(int w, int h){
 	ball2.set_Ball_speedY(BALL_SPEED);
 	ball2.set_Ball_position(w*0.7 - BALL_RADIUS, h*0.5 - BALL_RADIUS);
 	balls.push_back(ball2);
-	
+
 	// Window
 	window.create(sf::VideoMode(w, h), "3-codiots");
 	window.setFramerateLimit(60);
@@ -97,7 +98,7 @@ void Game::gameStart(){
 		startset(&text1, &text2, &prod, &start, &font1, &font2);
 
 		window.clear(sf::Color::Black);
-		
+
 		window.draw(text1);
 		window.draw(text2);
 		window.draw(start);
@@ -163,10 +164,10 @@ void Game::receiveKeyinputs(){
 
 void Game::object_draw(){
 	window.clear(sf::Color::Black);
-	for(int i=0; i<BRICKS_PER_ROW; i++){ // player1 bricks
+	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player1 bricks
 		window.draw(p1_bricks[i]);
 	}
-	for(int i=0; i<BRICKS_PER_ROW; i++){ // player2 bricks
+	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player2 bricks
 		window.draw(p2_bricks[i]);
 	}
 	for(int i=0; i<p1_paddle.size(); i++){ // player1 paddle
@@ -185,7 +186,7 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 	text2->setString("BREAKER");
 	prod->setString("Prod by 3-codiots");
 	start->setString("Press SpaceBar To Start !");
-	
+
 
 	text1->setFont(*font1);
 	text2->setFont(*font1);
@@ -196,7 +197,7 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 	text2->setCharacterSize(100);
 	prod->setCharacterSize(15);
 	start->setCharacterSize(28);
-	
+
 	text1->setFillColor(sf::Color::Red);
 	text2->setFillColor(sf::Color::Yellow);
 	start->setFillColor(sf::Color::Green);
@@ -204,7 +205,7 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 	start->setOutlineThickness(2.f);
 	prod->setFillColor(sf::Color::Blue);
 	prod->setStyle(sf::Text::Bold | sf::Text::Underlined);
-	
+
 	text1->setPosition(-10.f, 175.f);
 	text2->setPosition(120.f, 180.f);
 	text1->setRotation(-30.f);	
