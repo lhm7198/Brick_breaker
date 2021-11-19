@@ -27,9 +27,11 @@ public:
 	float get_Brick_height();
 	float get_Brick_x();
 	float get_Brick_y();
+	bool get_Brick_deleted();
 
 	void set_Brick_size(float brick_width_, float brick_height_);
 	void set_Brick_position(float brick_x_, float brick_y_);
+	void set_Brick_deleted();
 };
 
 #endif

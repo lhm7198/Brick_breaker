@@ -80,6 +80,7 @@ Game::Game(int w, int h){
 }
 
 void Game::gameStart(){
+	int cnt = 0;
 	while(window.isOpen() && is_start_page){
 		while(window.pollEvent(event)){
 			if(event.type == sf::Event::Closed){
@@ -100,12 +101,15 @@ void Game::gameStart(){
 
 		window.clear(sf::Color::Black);
 
+		if(cnt % 90 >=0 && cnt % 90 < 45){
+			window.draw(start);
+		}
 		window.draw(text1);
 		window.draw(text2);
-		window.draw(start);
 		window.draw(prod);
 
 		window.display();
+		cnt++;
 	}
 
 	gameRunning();
@@ -124,27 +128,8 @@ void Game::gameRunning(){
 		if(is_game_start){
 			p1_paddle[0].Paddle_move(screen_width, screen_height); // player1 paddle move
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
-			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball1 move
-			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball2 move
-		}
-		for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){
-			if(balls[0].get_Ball_y() > p1_bricks[i].get_Brick_y()+8 && balls[0].get_Ball_y() < p1_bricks[i].get_Brick_y()+13){			
-				if(balls[0].get_Ball_x() >= p1_bricks[i].get_Brick_x() && balls[0].get_Ball_x() < p1_bricks[i].get_Brick_x()+p1_bricks[i].get_Brick_width())				
-					balls[0].set_Ball_speedY(-1*balls[0].get_Ball_speedY());
-			}
-			if(balls[1].get_Ball_y() > p1_bricks[i].get_Brick_y()+8 && balls[1].get_Ball_y() < p1_bricks[i].get_Brick_y()+13){			
-				if(balls[1].get_Ball_x() >= p1_bricks[i].get_Brick_x() && balls[1].get_Ball_x() < p1_bricks[i].get_Brick_x()+p1_bricks[i].get_Brick_width())				
-					balls[1].set_Ball_speedY(-1*balls[1].get_Ball_speedY());
-			}
-			if(balls[0].get_Ball_y() > p2_bricks[i].get_Brick_y()-13 && balls[0].get_Ball_y() < p2_bricks[i].get_Brick_y()-8){			
-				if(balls[0].get_Ball_x() >= p2_bricks[i].get_Brick_x() && balls[0].get_Ball_x() < p2_bricks[i].get_Brick_x()+p2_bricks[i].get_Brick_width())				
-					//balls[0].set_Ball_speedY(-1*balls[0].get_Ball_speedY());
-					balls[0].set_Ball_speedY(0);
-			}
-			if(balls[1].get_Ball_y() > p2_bricks[i].get_Brick_y()-13 && balls[1].get_Ball_y() < p2_bricks[i].get_Brick_y()-8){			
-				if(balls[1].get_Ball_x() >= p2_bricks[i].get_Brick_x() && balls[1].get_Ball_x() < p2_bricks[i].get_Brick_x()+p2_bricks[i].get_Brick_width())				
-					balls[1].set_Ball_speedY(-1*balls[1].get_Ball_speedY());
-			}
+			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball1 move
+			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
 		}
 
 		object_draw();
@@ -185,10 +170,10 @@ void Game::receiveKeyinputs(){
 void Game::object_draw(){
 	window.clear(sf::Color::Black);
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player1 bricks
-		window.draw(p1_bricks[i]);
+		if(p1_bricks[i].get_Brick_deleted() == false) window.draw(p1_bricks[i]);
 	}
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player2 bricks
-		window.draw(p2_bricks[i]);
+		if(p2_bricks[i].get_Brick_deleted() == false) window.draw(p2_bricks[i]);
 	}
 	for(int i=0; i<p1_paddle.size(); i++){ // player1 paddle
 		window.draw(p1_paddle[i]);

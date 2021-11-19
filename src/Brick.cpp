@@ -26,6 +26,9 @@ float Brick::get_Brick_x(){
 float Brick::get_Brick_y(){
 	return this->getPosition().y;
 }
+bool Brick::get_Brick_deleted(){
+	return this->deleted;
+}
 
 void Brick::set_Brick_size(float brick_width_, float brick_height_){
 	this->brick_width=brick_width_;
@@ -35,4 +38,8 @@ void Brick::set_Brick_size(float brick_width_, float brick_height_){
 }
 void Brick::set_Brick_position(float brick_x_, float brick_y_){
 	this->setPosition(brick_x_, brick_y_);
+}
+
+void Brick::set_Brick_deleted(){
+	deleted = true;
 }
