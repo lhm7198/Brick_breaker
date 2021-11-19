@@ -28,6 +28,8 @@ float Brick::get_Brick_y(){
 }
 
 void Brick::set_Brick_size(float brick_width_, float brick_height_){
+	this->brick_width=brick_width_;
+	this->brick_height=brick_height_;
 	this->setSize(sf::Vector2f(brick_width_, brick_height_));
 	this->setFillColor(sf::Color(255, 0, 0));
 }

@@ -5,6 +5,7 @@
  *
  *	Copyright 2021 by 3-codiots
  */
+#include "iostream"
 #include "GameRunner.h"
 #include "stdio.h"
 
@@ -23,8 +24,8 @@ Game::Game(int w, int h){
 	float brick_width = w / (BRICKS_PER_ROW * 1.15);
 	float brick_height = brick_width * 0.3;
 	gap = (w - BRICKS_PER_ROW*brick_width) / (BRICKS_PER_ROW + 1);
-	p1_bricks_num = BRICKS_PER_ROW;
-	p2_bricks_num = BRICKS_PER_ROW;
+	p1_bricks_num = BRICKS_PER_ROW*BRICKS_PER_COL;
+	p2_bricks_num = BRICKS_PER_ROW*BRICKS_PER_COL;
 	for(int i=0; i<BRICKS_PER_COL ; i++){
 		for(int j=0; j<BRICKS_PER_ROW; j++){ // player1 bricks
 			Brick brick;
@@ -125,6 +126,25 @@ void Game::gameRunning(){
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
 			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball1 move
 			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0]); // ball2 move
+		}
+		for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){
+			if(balls[0].get_Ball_y() > p1_bricks[i].get_Brick_y()+8 && balls[0].get_Ball_y() < p1_bricks[i].get_Brick_y()+13){			
+				if(balls[0].get_Ball_x() >= p1_bricks[i].get_Brick_x() && balls[0].get_Ball_x() < p1_bricks[i].get_Brick_x()+p1_bricks[i].get_Brick_width())				
+					balls[0].set_Ball_speedY(-1*balls[0].get_Ball_speedY());
+			}
+			if(balls[1].get_Ball_y() > p1_bricks[i].get_Brick_y()+8 && balls[1].get_Ball_y() < p1_bricks[i].get_Brick_y()+13){			
+				if(balls[1].get_Ball_x() >= p1_bricks[i].get_Brick_x() && balls[1].get_Ball_x() < p1_bricks[i].get_Brick_x()+p1_bricks[i].get_Brick_width())				
+					balls[1].set_Ball_speedY(-1*balls[1].get_Ball_speedY());
+			}
+			if(balls[0].get_Ball_y() > p2_bricks[i].get_Brick_y()-13 && balls[0].get_Ball_y() < p2_bricks[i].get_Brick_y()-8){			
+				if(balls[0].get_Ball_x() >= p2_bricks[i].get_Brick_x() && balls[0].get_Ball_x() < p2_bricks[i].get_Brick_x()+p2_bricks[i].get_Brick_width())				
+					//balls[0].set_Ball_speedY(-1*balls[0].get_Ball_speedY());
+					balls[0].set_Ball_speedY(0);
+			}
+			if(balls[1].get_Ball_y() > p2_bricks[i].get_Brick_y()-13 && balls[1].get_Ball_y() < p2_bricks[i].get_Brick_y()-8){			
+				if(balls[1].get_Ball_x() >= p2_bricks[i].get_Brick_x() && balls[1].get_Ball_x() < p2_bricks[i].get_Brick_x()+p2_bricks[i].get_Brick_width())				
+					balls[1].set_Ball_speedY(-1*balls[1].get_Ball_speedY());
+			}
 		}
 
 		object_draw();
