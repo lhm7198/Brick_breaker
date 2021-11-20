@@ -10,7 +10,7 @@
 #include "stdio.h"
 
 void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start, sf::Font* font1, sf::Font* font2);
-void startgame(sf::Text* text, sf::Font* font);
+void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::Font* font);
 Game::Game(int w, int h){
 	// variable
 	screen_width = w;
@@ -101,7 +101,7 @@ void Game::gameStart(){
 
 		window.clear(sf::Color::Black);
 
-		if(cnt % 90 >=0 && cnt % 90 < 45){
+		if(cnt % 90 >=0 && cnt % 90 < 45){ // twinkle
 			window.draw(start);
 		}
 		window.draw(text1);
@@ -117,27 +117,24 @@ void Game::gameStart(){
 
 void Game::gameRunning(){
 	while(window.isOpen()){
-		while (window.pollEvent(event)) {
+		while(window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed){
 				window.close();
 			}
+
 			receiveKeyinputs();
 		}
+
 
 		if(is_game_start){
 			p1_paddle[0].Paddle_move(screen_width, screen_height); // player1 paddle move
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
 			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball1 move
 			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
-		}/*
-		else{
-			sf::Text text;
-			sf::Font font;
-			font.loadFromFile("NanumGothic.ttf");
-			startgame(&text, &font);
-			window.draw(text);
+			object_draw();
 		}
-		*/
+
+
 		object_draw();
 		window.display();
 	}
@@ -175,6 +172,16 @@ void Game::receiveKeyinputs(){
 
 void Game::object_draw(){
 	window.clear(sf::Color::Black);
+	if(!is_game_start){
+		sf::Font font;
+		font.loadFromFile("NanumGothic.ttf");
+		sf::Text text, p1_control, p2_control;
+		startgame(&text, &p1_control, &p2_control, &font);
+		window.draw(text);
+		window.draw(p1_control);
+		window.draw(p2_control);
+	}
+
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player1 bricks
 		if(p1_bricks[i].get_Brick_deleted() == false) window.draw(p1_bricks[i]);
 	}
@@ -223,12 +230,25 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 	start->setPosition(105.f, 650.f);
 	prod->setPosition(170.f,775.f);
 }
-void startgame(sf::Text* text, sf::Font* font){
+void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::Font* font){
 
-	text->setString("Enter");
+	text->setString("Press Enter to start");
+	p1_control->setString("A   D");
+	p2_control->setString("<-    ->");
+
 	text->setFont(*font);
-	text->setCharacterSize(50);
-	text->setFillColor(sf::Color::White);
-	text->setPosition(100.f, 400.f);
+	p1_control->setFont(*font);
+	p2_control->setFont(*font);
 
+	text->setCharacterSize(30);
+	p1_control->setCharacterSize(50);
+	p2_control->setCharacterSize(50);
+
+	text->setFillColor(sf::Color::White);
+	p1_control->setFillColor(sf::Color::White);
+	p2_control->setFillColor(sf::Color::White);
+
+	text->setPosition(100.f, 450.f);
+	p1_control->setPosition(175.f, 100.f);
+	p2_control->setPosition(175.f, 650.f);
 }
