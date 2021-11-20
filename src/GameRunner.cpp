@@ -21,24 +21,24 @@ Game::Game(int w, int h){
 	// Players
 
 	// Bricks
-	float brick_width = w / (BRICKS_PER_ROW * 1.15);
-	float brick_height = brick_width * 0.3;
+	float brick_width = w / (BRICKS_PER_ROW * 1.1);
+	float brick_height = brick_width * 0.4;
 	gap = (w - BRICKS_PER_ROW*brick_width) / (BRICKS_PER_ROW + 1);
 	p1_bricks_num = BRICKS_PER_ROW*BRICKS_PER_COL;
 	p2_bricks_num = BRICKS_PER_ROW*BRICKS_PER_COL;
-	for(int i=0; i<BRICKS_PER_COL ; i++){
+	for(int i=0; i<BRICKS_PER_COL; i++){
 		for(int j=0; j<BRICKS_PER_ROW; j++){ // player1 bricks
 			Brick brick;
 			brick.set_Brick_size(brick_width, brick_height);
-			brick.set_Brick_position(gap + j*(brick_width+gap), i*(gap+brick_height));
+			brick.set_Brick_position(gap + j*(brick_width + gap), gap + i*(brick_height + gap));
 			p1_bricks.push_back(brick);
 		}
 	}
-	for(int i=0; i<BRICKS_PER_COL ; i++){
+	for(int i=0; i<BRICKS_PER_COL; i++){
 		for(int j=0; j<BRICKS_PER_ROW; j++){ // player2 bricks
 			Brick brick;
 			brick.set_Brick_size(brick_width, brick_height);
-			brick.set_Brick_position(gap + j*(brick_width+gap), h - gap - brick_height-i*(gap+brick_height));
+			brick.set_Brick_position(gap + j*(brick_width + gap), screen_height - gap - brick_height - i*(brick_height + gap));
 			p2_bricks.push_back(brick);
 		}
 	}

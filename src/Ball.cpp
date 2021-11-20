@@ -7,6 +7,7 @@
  */
 
 #include "Ball.h"
+#include <math.h>
 
 Ball::Ball() : CircleShape(0){
 	ball_radius = 0;
@@ -48,41 +49,47 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 	this->move(ball_speedX, ball_speedY);
 
 	// wall
-	if(this->get_Ball_x() < 0){ // left collision
-		this->set_Ball_speedX(-ball_speedX);
+	if(get_Ball_x() - ball_radius < 0){ // left collision
+		set_Ball_speedX(-ball_speedX);
+		
 	}
-	else if(this->get_Ball_x() > screen_width){ // right collision
-		this->set_Ball_speedX(-ball_speedX);
+	else if(get_Ball_x() + 2*ball_radius >= screen_width){ // right collision
+		set_Ball_speedX(-ball_speedX);
 	}
-	if(this->get_Ball_y() < 0){ // downside collision
-		this->set_Ball_speedY(-ball_speedY);
+	if(get_Ball_y() - ball_radius < 0){ // topside collision
+		set_Ball_speedY(-ball_speedY);
+		set_Ball_speedX(0);
+		set_Ball_speedY(0);
 	}
-	else if(this->get_Ball_y() > screen_height){ // topside collision
-		this->set_Ball_speedY(-ball_speedY);
+	else if(get_Ball_y() + 2*ball_radius >= screen_height){ // downside collision
+		set_Ball_speedY(-ball_speedY);
+		set_Ball_speedX(0);
+		set_Ball_speedY(0);
 	}
 
 	// paddle
-	if(get_Ball_speedY()<0){ // when ball moves down to top
-		if((this->get_Ball_y() - p1.get_Paddle_y() > 0) && (this->get_Ball_y() - p1.get_Paddle_y() < 5)){
-			if((this->get_Ball_x() + this->ball_radius > p1.get_Paddle_x()) && (this->get_Ball_x() - this->ball_radius < p1.get_Paddle_x() + 96)){ // collide with p1_paddle
+	if(get_Ball_speedY() < 0){ // when ball moves down to top
+		if(this->get_Ball_y() - p1.get_Paddle_y() > p1.get_Paddle_height() && this->get_Ball_y() - p1.get_Paddle_y() < p1.get_Paddle_height() + 5){
+			if(this->get_Ball_x() + this->ball_radius > p1.get_Paddle_x() && this->get_Ball_x() - this->ball_radius < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
 				this->set_Ball_speedY(-ball_speedY);
 			}
 		}
-		if((p2.get_Paddle_y() - this->get_Ball_y() > -7) && (p2.get_Paddle_y() - this->get_Ball_y() < -2)){ // collide with p2_paddle
-			if((this->get_Ball_x() + this->ball_radius > p2.get_Paddle_x()) && (this->get_Ball_x() - this->ball_radius < p2.get_Paddle_x() + 96)){
+		if(this->get_Ball_y() - p2.get_Paddle_y() > p2.get_Paddle_height() && this->get_Ball_y() - p2.get_Paddle_y() < p2.get_Paddle_height() + 5){ // collide with p2_paddle
+			if(this->get_Ball_x() + this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() - this->ball_radius < p2.get_Paddle_x() + p2.get_Paddle_width()){
 				this->set_Ball_speedY(-ball_speedY);
 			}
 		}
 
 	}
 	else{ // when ball moves top to down
-		if((this->get_Ball_y() - p1.get_Paddle_y() > -7) && (this->get_Ball_y() - p1.get_Paddle_y() < -2)){ // collide with p1_paddle
-			if((this->get_Ball_x() + 2*this->ball_radius > p1.get_Paddle_x()) && (this->get_Ball_x() < p1.get_Paddle_x() + 96)){
+		if(p1.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p1.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p1_paddle
+			if(this->get_Ball_x() + 2*this->ball_radius > p1.get_Paddle_x() && this->get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){
 				this->set_Ball_speedY(-ball_speedY);
+				
 			}
 		}
-		if((p2.get_Paddle_y() - this->get_Ball_y() > 0) && (p2.get_Paddle_y() - this->get_Ball_y() < 5)){ // collide with p2_paddle
-			if((this->get_Ball_x() + 2*this->ball_radius > p2.get_Paddle_x()) && (this->get_Ball_x() < p2.get_Paddle_x() + 96)){
+		if(p2.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p2.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p2_paddle
+			if(this->get_Ball_x() + 2*this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){
 				this->set_Ball_speedY(-ball_speedY);
 			}
 		}
@@ -91,59 +98,107 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 
 	// brick
 	for(int i=0; i<p1_b.size(); i++){
+		// p1_brick
 		if(p1_b[i].get_Brick_deleted() == false){
-			if(get_Ball_speedY()>0){
-				if(get_Ball_y() > p1_b[i].get_Brick_y()-13 && get_Ball_y() < p1_b[i].get_Brick_y()-8){ // collide with p1_bricks topside	
-					if(get_Ball_x() + this->ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() - this->ball_radius < p1_b[i].get_Brick_x()+p1_b[i].get_Brick_width()){
-						set_Ball_speedY(-1*get_Ball_speedY());
+			if(get_Ball_speedY() < 0){ // collide with p1_bricks downside
+				if(get_Ball_y() - p1_b[i].get_Brick_y() > 0.7*p1_b[i].get_Brick_height() && get_Ball_y() - p1_b[i].get_Brick_y() < 0.7*p1_b[i].get_Brick_height() + 5){
+					if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width()){
+						set_Ball_speedY(-ball_speedY);
 						p1_b[i].set_Brick_deleted();
 					}
 				}
 			}
-			else{
-				if(get_Ball_y() > p1_b[i].get_Brick_y()+8 && get_Ball_y() < p1_b[i].get_Brick_y()+13){ // collide with p1_bricks downside	
-					if(get_Ball_x() + this->ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() - this->ball_radius < p1_b[i].get_Brick_x()+p1_b[i].get_Brick_width()){
-						set_Ball_speedY(-1*get_Ball_speedY());
+			else{ // collide with p1_bricks topside
+				if(p1_b[i].get_Brick_y() - get_Ball_y() > 0.7*p1_b[i].get_Brick_height() && p1_b[i].get_Brick_y() - get_Ball_y() < 0.7*p1_b[i].get_Brick_height() + 5){
+					if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width()){
+						set_Ball_speedY(-ball_speedY);
 						p1_b[i].set_Brick_deleted();
 					}
 				}
 			}
-
-			if(get_Ball_speedX()>0){ // collide with p1_bricks leftside
-				if(get_Ball_x() + this->ball_radius > p1_b[i].get_Brick_x() && get_Ball_x() + this->ball_radius < p1_b[i].get_Brick_x() + 5){	
-					if(get_Ball_y() >= p1_b[i].get_Brick_y() && get_Ball_y() < p1_b[i].get_Brick_y()+p1_b[i].get_Brick_height()){
-						set_Ball_speedX(-1*get_Ball_speedX());
+			if(get_Ball_speedX() > 0){ // collide with p1_bricks leftside
+				if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() + ball_radius < p1_b[i].get_Brick_x() + 5){	
+					if(get_Ball_y() >= p1_b[i].get_Brick_y() && get_Ball_y() < p1_b[i].get_Brick_y() + p1_b[i].get_Brick_height()){
+						set_Ball_speedX(-ball_speedX);
 						p1_b[i].set_Brick_deleted();
 					}
 				}
 			}
 			else{ // collide with p1_bricks rightside
-				if(get_Ball_x() - this->ball_radius > p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() && get_Ball_x() - this->ball_radius < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() + 5){
+				if(get_Ball_x() - ball_radius > p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() + 5){
 					if(get_Ball_y() >= p1_b[i].get_Brick_y() && get_Ball_y() < p1_b[i].get_Brick_y()+p1_b[i].get_Brick_height()){
-						set_Ball_speedX(-1*get_Ball_speedX());
+						set_Ball_speedX(-ball_speedX);
 						p1_b[i].set_Brick_deleted();
 					}
 				}
 			}
-
+			//if(get_Ball_speedX() > 0){ // collide with p1_bricks leftside
+			//	if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() - 5 && get_Ball_x() + ball_radius < p1_b[i].get_Brick_x()){	
+			//		if(get_Ball_y() - ball_radius >= p1_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p1_b[i].get_Brick_y() + p1_b[i].get_Brick_height()){
+			//			set_Ball_speedX(-ball_speedX);
+			//			p1_b[i].set_Brick_deleted();
+			//		}
+			//	}
+			//}
+			//else{ // collide with p1_bricks rightside
+			//	if(get_Ball_x() - ball_radius > p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() + 5){
+			//		if(get_Ball_y() - ball_radius >= p1_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p1_b[i].get_Brick_y() + p1_b[i].get_Brick_height()){
+			//			set_Ball_speedX(-ball_speedX);
+			//			p1_b[i].set_Brick_deleted();
+			//		}
+			//	}
+			//}
 		}
+		// p2_brick
 		if(p2_b[i].get_Brick_deleted() == false){
-			if(get_Ball_speedY()>0){
-				if(get_Ball_y() > p2_b[i].get_Brick_y()-13 && get_Ball_y() < p2_b[i].get_Brick_y()-8){ // collide with p2_bricks	
-					if(get_Ball_x() + this->ball_radius >= p2_b[i].get_Brick_x() && get_Ball_x() - this->ball_radius < p2_b[i].get_Brick_x()+p2_b[i].get_Brick_width()){	
-						set_Ball_speedY(-1*get_Ball_speedY());
+			if(get_Ball_speedY() < 0){ // collide with p2_bricks downside
+				if(this->get_Ball_y() - p2_b[i].get_Brick_y() > 0.7*p2_b[i].get_Brick_height() && this->get_Ball_y() - p2_b[i].get_Brick_y() < 0.7*p2_b[i].get_Brick_height() + 5){
+					if(get_Ball_x() + this->ball_radius >= p2_b[i].get_Brick_x() && get_Ball_x() < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width()){
+						set_Ball_speedY(-ball_speedY);
 						p2_b[i].set_Brick_deleted();
 					}
 				}
 			}
-			else{
-				if(get_Ball_y() > p2_b[i].get_Brick_y()+8 && get_Ball_y() < p2_b[i].get_Brick_y()+13){ // collide with p2_bricks	
-					if(get_Ball_x() + this->ball_radius >= p2_b[i].get_Brick_x() && get_Ball_x() - + this->ball_radius < p2_b[i].get_Brick_x()+p2_b[i].get_Brick_width()){	
-						set_Ball_speedY(-1*get_Ball_speedY());
+			else{ // collide with p2_bricks topside
+				if(p2_b[i].get_Brick_y() - this->get_Ball_y() > 0.7*p2_b[i].get_Brick_height() && p2_b[i].get_Brick_y() - this->get_Ball_y() < 0.7*p2_b[i].get_Brick_height() + 5){
+					if(get_Ball_x() + this->ball_radius >= p2_b[i].get_Brick_x() && get_Ball_x() < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width()){
+						set_Ball_speedY(-ball_speedY);
 						p2_b[i].set_Brick_deleted();
 					}
-				}			
+				}
 			}
+			if(get_Ball_speedX() > 0){ // collide with p2_bricks leftside
+				if(get_Ball_x() + ball_radius > p2_b[i].get_Brick_x() && get_Ball_x() + ball_radius < p2_b[i].get_Brick_x() + 5){	
+					if(get_Ball_y() >= p2_b[i].get_Brick_y() && get_Ball_y() < p2_b[i].get_Brick_y() + p2_b[i].get_Brick_height()){
+						set_Ball_speedX(-ball_speedX);
+						p2_b[i].set_Brick_deleted();
+					}
+				}
+			}
+			else{ // collide with p2_bricks rightside
+				if(get_Ball_x() - ball_radius > p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() + 5){
+					if(get_Ball_y() >= p2_b[i].get_Brick_y() && get_Ball_y() < p2_b[i].get_Brick_y()+p2_b[i].get_Brick_height()){
+						set_Ball_speedX(-ball_speedX);
+						p2_b[i].set_Brick_deleted();
+					}
+				}
+			}
+			/*if(get_Ball_speedX() > 0){ // collide with p2_bricks leftside
+				if(get_Ball_x() + ball_radius >= p2_b[i].get_Brick_x() - 5 && get_Ball_x() + ball_radius < p2_b[i].get_Brick_x()){	
+					if(get_Ball_y() - ball_radius >= p2_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p2_b[i].get_Brick_y() + p2_b[i].get_Brick_height()){
+						set_Ball_speedX(-ball_speedX);
+						p2_b[i].set_Brick_deleted();
+					}
+				}
+			}
+			else{ // collide with p2_bricks rightside
+				if(get_Ball_x() - ball_radius > p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() + 5){
+					if(get_Ball_y() - ball_radius >= p2_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p2_b[i].get_Brick_y() + p2_b[i].get_Brick_height()){
+						set_Ball_speedX(-ball_speedX);
+						p2_b[i].set_Brick_deleted();
+					}
+				}
+			}*/
 		}
 	}
 }

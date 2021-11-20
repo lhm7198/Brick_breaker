@@ -18,11 +18,11 @@
 class Game{
 private:
 	// initial value
-	const int BRICKS_PER_ROW = 12;
-	const int BRICKS_PER_COL = 5;
+	const int BRICKS_PER_ROW = 10;
+	const int BRICKS_PER_COL = 3;
 	const float BALL_RADIUS = 6;
 	const float PADDLE_SPEED = 5.0;
-	const float BALL_SPEED = 3.5;
+	const float BALL_SPEED = 3.0;
 	
 	// variable
 	int screen_width;
@@ -30,10 +30,6 @@ private:
 	bool is_start_page;
 	bool is_game_start;
 
-/*	// Players
-	Player player1;
-	Player player2;
-*/
 	// Bricks
 	float gap;
 	int p1_bricks_num;
