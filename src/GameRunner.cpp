@@ -10,7 +10,7 @@
 #include "stdio.h"
 
 void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start, sf::Font* font1, sf::Font* font2);
-
+void startgame(sf::Text* text, sf::Font* font);
 Game::Game(int w, int h){
 	// variable
 	screen_width = w;
@@ -121,7 +121,6 @@ void Game::gameRunning(){
 			if (event.type == sf::Event::Closed){
 				window.close();
 			}
-
 			receiveKeyinputs();
 		}
 
@@ -130,8 +129,15 @@ void Game::gameRunning(){
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
 			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball1 move
 			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
+		}/*
+		else{
+			sf::Text text;
+			sf::Font font;
+			font.loadFromFile("NanumGothic.ttf");
+			startgame(&text, &font);
+			window.draw(text);
 		}
-
+		*/
 		object_draw();
 		window.display();
 	}
@@ -216,4 +222,13 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 	text1->setRotation(-30.f);	
 	start->setPosition(105.f, 650.f);
 	prod->setPosition(170.f,775.f);
+}
+void startgame(sf::Text* text, sf::Font* font){
+
+	text->setString("Enter");
+	text->setFont(*font);
+	text->setCharacterSize(50);
+	text->setFillColor(sf::Color::White);
+	text->setPosition(100.f, 400.f);
+
 }
