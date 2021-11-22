@@ -7,6 +7,7 @@
  */
 
 #include "Ball.h"
+#include <stdio.h>
 #include <math.h>
 
 Ball::Ball() : CircleShape(0){
@@ -71,12 +72,38 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 	if(get_Ball_speedY() < 0){ // when ball moves down to top
 		if(this->get_Ball_y() - p1.get_Paddle_y() > p1.get_Paddle_height() && this->get_Ball_y() - p1.get_Paddle_y() < p1.get_Paddle_height() + 5){
 			if(this->get_Ball_x() + this->ball_radius > p1.get_Paddle_x() && this->get_Ball_x() - this->ball_radius < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
-				this->set_Ball_speedY(-ball_speedY);
+				if(ball_speedX * p2.get_Paddle_speedX() > 0){
+					if(abs(ball_speedX) < 6.0){
+						ball_speedX = ball_speedX * 1.2;
+						ball_speedY = ball_speedY * 0.75;
+					}
+				}
+				else{
+					if(abs(ball_speedX) > 2.5){
+						ball_speedX = ball_speedX / 1.2;
+						ball_speedY = ball_speedY * 1.33;
+					}
+				}
+
+				ball_speedY = -ball_speedY;
 			}
 		}
 		if(this->get_Ball_y() - p2.get_Paddle_y() > p2.get_Paddle_height() && this->get_Ball_y() - p2.get_Paddle_y() < p2.get_Paddle_height() + 5){ // collide with p2_paddle
 			if(this->get_Ball_x() + this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() - this->ball_radius < p2.get_Paddle_x() + p2.get_Paddle_width()){
-				this->set_Ball_speedY(-ball_speedY);
+				if(ball_speedX * p2.get_Paddle_speedX() > 0){
+					if(abs(ball_speedX) < 5.5){
+						ball_speedX = ball_speedX * 1.2;
+						ball_speedY = ball_speedY * 0.75;
+					}
+				}
+				else{
+					if(abs(ball_speedX) > 2.5){
+						ball_speedX = ball_speedX / 1.2;
+						ball_speedY = ball_speedY * 1.33;
+					}
+				}
+
+				ball_speedY = -ball_speedY;
 			}
 		}
 
@@ -84,16 +111,40 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 	else{ // when ball moves top to down
 		if(p1.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p1.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p1_paddle
 			if(this->get_Ball_x() + 2*this->ball_radius > p1.get_Paddle_x() && this->get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){
-				this->set_Ball_speedY(-ball_speedY);
-				
+				if(ball_speedX * p1.get_Paddle_speedX() > 0){
+					if(abs(ball_speedX) < 6.0){
+						ball_speedX = ball_speedX * 1.2;
+						ball_speedY = ball_speedY * 0.75;
+					}
+				}
+				else{
+					if(abs(ball_speedX) > 2.5){
+						ball_speedX = ball_speedX / 1.2;
+						ball_speedY = ball_speedY * 1.33;
+					}
+				}
+
+				ball_speedY = -ball_speedY;
 			}
 		}
 		if(p2.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p2.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p2_paddle
 			if(this->get_Ball_x() + 2*this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){
-				this->set_Ball_speedY(-ball_speedY);
+				if(ball_speedX * p2.get_Paddle_speedX() > 0){
+					if(abs(ball_speedX) < 6.0){
+						ball_speedX = ball_speedX * 1.2;
+						ball_speedY = ball_speedY * 0.75;
+					}
+				}
+				else{
+					if(abs(ball_speedX) > 2.5){
+						ball_speedX = ball_speedX / 1.2;
+						ball_speedY = ball_speedY * 1.33;
+					}
+				}
+
+				ball_speedY = -ball_speedY;
 			}
 		}
-
 	}
 
 	// brick
@@ -104,7 +155,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(get_Ball_y() - p1_b[i].get_Brick_y() > 0.7*p1_b[i].get_Brick_height() && get_Ball_y() - p1_b[i].get_Brick_y() < 0.7*p1_b[i].get_Brick_height() + 5){
 					if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width()){
 						set_Ball_speedY(-ball_speedY);
-						p1_b[i].set_Brick_deleted();
+
+						int hp = p1_b[i].get_Brick_hp();
+						p1_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p1_b[i].set_Brick_deleted();
+
+						p1_b[i].set_Brick_color();
 					}
 				}
 			}
@@ -112,7 +169,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(p1_b[i].get_Brick_y() - get_Ball_y() > 0.7*p1_b[i].get_Brick_height() && p1_b[i].get_Brick_y() - get_Ball_y() < 0.7*p1_b[i].get_Brick_height() + 5){
 					if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width()){
 						set_Ball_speedY(-ball_speedY);
-						p1_b[i].set_Brick_deleted();
+						
+						int hp = p1_b[i].get_Brick_hp();
+						p1_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p1_b[i].set_Brick_deleted();
+
+						p1_b[i].set_Brick_color();
 					}
 				}
 			}
@@ -120,7 +183,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() && get_Ball_x() + ball_radius < p1_b[i].get_Brick_x() + 5){	
 					if(get_Ball_y() >= p1_b[i].get_Brick_y() && get_Ball_y() < p1_b[i].get_Brick_y() + p1_b[i].get_Brick_height()){
 						set_Ball_speedX(-ball_speedX);
-						p1_b[i].set_Brick_deleted();
+						
+						int hp = p1_b[i].get_Brick_hp();
+						p1_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p1_b[i].set_Brick_deleted();
+
+						p1_b[i].set_Brick_color();
 					}
 				}
 			}
@@ -128,7 +197,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(get_Ball_x() - ball_radius > p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() + 5){
 					if(get_Ball_y() >= p1_b[i].get_Brick_y() && get_Ball_y() < p1_b[i].get_Brick_y()+p1_b[i].get_Brick_height()){
 						set_Ball_speedX(-ball_speedX);
-						p1_b[i].set_Brick_deleted();
+						
+						int hp = p1_b[i].get_Brick_hp();
+						p1_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p1_b[i].set_Brick_deleted();
+
+						p1_b[i].set_Brick_color();
 					}
 				}
 			}
@@ -155,7 +230,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(this->get_Ball_y() - p2_b[i].get_Brick_y() > 0.7*p2_b[i].get_Brick_height() && this->get_Ball_y() - p2_b[i].get_Brick_y() < 0.7*p2_b[i].get_Brick_height() + 5){
 					if(get_Ball_x() + this->ball_radius >= p2_b[i].get_Brick_x() && get_Ball_x() < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width()){
 						set_Ball_speedY(-ball_speedY);
-						p2_b[i].set_Brick_deleted();
+						
+						int hp = p2_b[i].get_Brick_hp();
+						p2_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p2_b[i].set_Brick_deleted();
+
+						p2_b[i].set_Brick_color();
 					}
 				}
 			}
@@ -163,7 +244,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(p2_b[i].get_Brick_y() - this->get_Ball_y() > 0.7*p2_b[i].get_Brick_height() && p2_b[i].get_Brick_y() - this->get_Ball_y() < 0.7*p2_b[i].get_Brick_height() + 5){
 					if(get_Ball_x() + this->ball_radius >= p2_b[i].get_Brick_x() && get_Ball_x() < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width()){
 						set_Ball_speedY(-ball_speedY);
-						p2_b[i].set_Brick_deleted();
+
+						int hp = p2_b[i].get_Brick_hp();
+						p2_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p2_b[i].set_Brick_deleted();
+
+						p2_b[i].set_Brick_color();
 					}
 				}
 			}
@@ -171,7 +258,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(get_Ball_x() + ball_radius > p2_b[i].get_Brick_x() && get_Ball_x() + ball_radius < p2_b[i].get_Brick_x() + 5){	
 					if(get_Ball_y() >= p2_b[i].get_Brick_y() && get_Ball_y() < p2_b[i].get_Brick_y() + p2_b[i].get_Brick_height()){
 						set_Ball_speedX(-ball_speedX);
-						p2_b[i].set_Brick_deleted();
+
+						int hp = p2_b[i].get_Brick_hp();
+						p2_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p2_b[i].set_Brick_deleted();
+
+						p2_b[i].set_Brick_color();
 					}
 				}
 			}
@@ -179,7 +272,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 				if(get_Ball_x() - ball_radius > p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() + 5){
 					if(get_Ball_y() >= p2_b[i].get_Brick_y() && get_Ball_y() < p2_b[i].get_Brick_y()+p2_b[i].get_Brick_height()){
 						set_Ball_speedX(-ball_speedX);
-						p2_b[i].set_Brick_deleted();
+					
+						int hp = p2_b[i].get_Brick_hp();
+						p2_b[i].set_Brick_hp(hp - 1);
+
+						if(hp - 1 == 0) p2_b[i].set_Brick_deleted();
+
+						p2_b[i].set_Brick_color();
 					}
 				}
 			}

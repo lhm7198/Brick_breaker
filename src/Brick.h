@@ -15,8 +15,7 @@ class Brick : public sf::RectangleShape{
 private:
 	float brick_width; 
 	float brick_height;
-	float brick_x; 
-	float brick_y;
+	int brick_hp;
 	bool deleted;
 	
 	// item, hp, color
@@ -27,10 +26,13 @@ public:
 	float get_Brick_height();
 	float get_Brick_x();
 	float get_Brick_y();
+	int get_Brick_hp();
 	bool get_Brick_deleted();
 
 	void set_Brick_size(float brick_width_, float brick_height_);
 	void set_Brick_position(float brick_x_, float brick_y_);
+	void set_Brick_hp(int brick_hp_);
+	void set_Brick_color();
 	void set_Brick_deleted();
 };
 

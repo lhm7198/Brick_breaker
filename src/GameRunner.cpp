@@ -31,7 +31,8 @@ Game::Game(int w, int h){
 			Brick brick;
 			brick.set_Brick_size(brick_width, brick_height);
 			brick.set_Brick_position(gap + j*(brick_width + gap), gap + i*(brick_height + gap));
-			brick.setFillColor(sf::Color(255, 120*i, 0));
+			brick.set_Brick_hp(3-i);
+			brick.set_Brick_color();
 			p1_bricks.push_back(brick);
 		}
 	}
@@ -40,7 +41,8 @@ Game::Game(int w, int h){
 			Brick brick;
 			brick.set_Brick_size(brick_width, brick_height);
 			brick.set_Brick_position(gap + j*(brick_width + gap), screen_height - gap - brick_height - i*(brick_height + gap));
-			brick.setFillColor(sf::Color(255, 120*i, 0));
+			brick.set_Brick_hp(3-i);
+			brick.set_Brick_color();
 			p2_bricks.push_back(brick);
 		}
 	}
@@ -52,13 +54,13 @@ Game::Game(int w, int h){
 	Paddle paddle1; // player1 paddle
 	paddle1.set_Paddle_size(paddle_width, paddle_height);
 	paddle1.set_Paddle_position(w*0.5 - paddle_width/2, h*0.2);
-	paddle1.set_Paddle_speedX(PADDLE_SPEED);
+	paddle1.set_Paddle_speedX(0);
 	p1_paddle.push_back(paddle1);
 
 	Paddle paddle2; // player2 paddle
 	paddle2.set_Paddle_size(paddle_width, paddle_height);
 	paddle2.set_Paddle_position(w*0.5 - paddle_width/2, h*0.8 - paddle_height);
-	paddle2.set_Paddle_speedX(PADDLE_SPEED);
+	paddle2.set_Paddle_speedX(0);
 	p2_paddle.push_back(paddle2);
 
 	// Balls
@@ -127,41 +129,33 @@ void Game::gameRunning(){
 			receiveKeyinputs();
 		}
 
-
 		if(is_game_start){
 			p1_paddle[0].Paddle_move(screen_width, screen_height); // player1 paddle move
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
 			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball1 move
-			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
+			//balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
 			object_draw();
 		}
-
-
+		printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
 		object_draw();
 		window.display();
 	}
 }
 
 void Game::receiveKeyinputs(){
-	float p1_paddle_speed;
-	float p2_paddle_speed;
 	if(event.type == sf::Event::KeyPressed){
 		switch(event.key.code){
 			case sf::Keyboard::A:
-				p1_paddle[0].set_Paddle_move_left(true);
-				p1_paddle[0].set_Paddle_move_right(false);
+				p1_paddle[0].set_Paddle_speedX(-PADDLE_SPEED);
 				break;
 			case sf::Keyboard::D:
-				p1_paddle[0].set_Paddle_move_left(false);
-				p1_paddle[0].set_Paddle_move_right(true);
+				p1_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Left:
-				p2_paddle[0].set_Paddle_move_left(true);
-				p2_paddle[0].set_Paddle_move_right(false);
+				p2_paddle[0].set_Paddle_speedX(-PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Right:
-				p2_paddle[0].set_Paddle_move_left(false);
-				p2_paddle[0].set_Paddle_move_right(true);
+				p2_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Return:
 				is_game_start = true;
