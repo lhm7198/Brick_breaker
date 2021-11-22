@@ -31,6 +31,7 @@ Game::Game(int w, int h){
 			Brick brick;
 			brick.set_Brick_size(brick_width, brick_height);
 			brick.set_Brick_position(gap + j*(brick_width + gap), gap + i*(brick_height + gap));
+			brick.setFillColor(sf::Color(255, 120*i, 0));
 			p1_bricks.push_back(brick);
 		}
 	}
@@ -39,6 +40,7 @@ Game::Game(int w, int h){
 			Brick brick;
 			brick.set_Brick_size(brick_width, brick_height);
 			brick.set_Brick_position(gap + j*(brick_width + gap), screen_height - gap - brick_height - i*(brick_height + gap));
+			brick.setFillColor(sf::Color(255, 120*i, 0));
 			p2_bricks.push_back(brick);
 		}
 	}
@@ -172,15 +174,15 @@ void Game::receiveKeyinputs(){
 
 void Game::object_draw(){
 	window.clear(sf::Color::Black);
+	sf::Font font;
+	font.loadFromFile("NanumGothic.ttf");
+	sf::Text text, p1_control, p2_control;
+	startgame(&text, &p1_control, &p2_control, &font);
 	if(!is_game_start){
-		sf::Font font;
-		font.loadFromFile("NanumGothic.ttf");
-		sf::Text text, p1_control, p2_control;
-		startgame(&text, &p1_control, &p2_control, &font);
 		window.draw(text);
-		window.draw(p1_control);
-		window.draw(p2_control);
 	}
+	window.draw(p1_control);
+	window.draw(p2_control);
 
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player1 bricks
 		if(p1_bricks[i].get_Brick_deleted() == false) window.draw(p1_bricks[i]);
@@ -233,7 +235,7 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::Font* font){
 
 	text->setString("Press Enter to start");
-	p1_control->setString("A   D");
+	p1_control->setString("A      D");
 	p2_control->setString("<-    ->");
 
 	text->setFont(*font);
@@ -245,10 +247,10 @@ void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::F
 	p2_control->setCharacterSize(50);
 
 	text->setFillColor(sf::Color::White);
-	p1_control->setFillColor(sf::Color::White);
-	p2_control->setFillColor(sf::Color::White);
+	p1_control->setFillColor(sf::Color(250, 250, 250, 100));
+	p2_control->setFillColor(sf::Color(250, 250, 250, 100));
 
 	text->setPosition(100.f, 450.f);
-	p1_control->setPosition(175.f, 100.f);
-	p2_control->setPosition(175.f, 650.f);
+	p1_control->setPosition(160.f, 100.f);
+	p2_control->setPosition(160.f, 650.f);
 }
