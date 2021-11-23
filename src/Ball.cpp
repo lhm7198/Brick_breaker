@@ -46,6 +46,10 @@ void Ball::set_Ball_speedX(float ball_speedX_){
 void Ball::set_Ball_speedY(float ball_speedY_){
 	ball_speedY = ball_speedY_;
 }
+void Ball::set_Ball_color(){
+	if(active) this->setFillColor(sf::Color::Red);
+	else this->setFillColor(sf::Color::White);
+}
 
 void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2, std::vector<Brick> &p1_b, std::vector<Brick> &p2_b){
 	this->move(ball_speedX, ball_speedY);
@@ -72,7 +76,7 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 	if(get_Ball_speedY() < 0){ // when ball moves down to top
 		if(get_Ball_y() - p1.get_Paddle_y() > p1.get_Paddle_height() && get_Ball_y() - p1.get_Paddle_y() < p1.get_Paddle_height() + 5){
 			if(get_Ball_x() + ball_radius > p1.get_Paddle_x() && get_Ball_x() - ball_radius < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
-				if(p1.get_Paddle_active()){ // p1 was active
+				if(p1.get_Paddle_active() && !active){ // p1 was active
 					active = true;
 					p1.set_Paddle_inactive();
 				}
@@ -95,7 +99,7 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		}
 		if(this->get_Ball_y() - p2.get_Paddle_y() > p2.get_Paddle_height() && this->get_Ball_y() - p2.get_Paddle_y() < p2.get_Paddle_height() + 5){ // collide with p2_paddle
 			if(this->get_Ball_x() + this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() - this->ball_radius < p2.get_Paddle_x() + p2.get_Paddle_width()){
-				if(p2.get_Paddle_active()){ // p2 was active
+				if(p2.get_Paddle_active() && !active){ // p2 was active
 					active = true;
 					p2.set_Paddle_inactive();
 				}				
@@ -121,7 +125,7 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 	else{ // when ball moves top to down
 		if(p1.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p1.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p1_paddle
 			if(this->get_Ball_x() + 2*this->ball_radius > p1.get_Paddle_x() && this->get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){
-				if(p1.get_Paddle_active()){ // p1 was active
+				if(p1.get_Paddle_active() && !active){ // p1 was active
 					active = true;
 					p1.set_Paddle_inactive();
 				}
@@ -144,7 +148,7 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		}
 		if(p2.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p2.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p2_paddle
 			if(this->get_Ball_x() + 2*this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){
-				if(p2.get_Paddle_active()){ // p2 was active
+				if(p2.get_Paddle_active() && !active){ // p2 was active
 					active = true;
 					p2.set_Paddle_inactive();
 				}
@@ -214,7 +218,7 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 			p1_b[i].set_Brick_hp(hp - 1);
 
 			if(p1_b[i].get_Brick_hp() == 0) {
-				find_item(p1_b[i], p1);
+				p2_get_item(p1_b[i], p2);
 				p1_b[i].set_Brick_deleted();
 			}
 		}
@@ -267,14 +271,31 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 			p2_b[i].set_Brick_hp(hp - 1);
 
 			if(p2_b[i].get_Brick_hp() == 0) {
-				find_item(p2_b[i], p2);
+				p1_get_item(p2_b[i], p1);
 				p2_b[i].set_Brick_deleted();
 			}
 		}
 	}
 }
 
-void Ball::find_item(Brick &brick, Paddle &paddle){
+void Ball::p1_get_item(Brick &brick, Paddle &paddle){
+	int item = brick.get_Brick_item();
+
+	switch(item){
+		case 0: 
+			break;
+		case 1: 
+			break;
+		case 2:
+			break;
+		case 3:
+			paddle.set_Paddle_bomb(3);
+			break;
+		default:
+			break;		
+	}
+}
+void Ball::p2_get_item(Brick &brick, Paddle &paddle){
 	int item = brick.get_Brick_item();
 
 	switch(item){

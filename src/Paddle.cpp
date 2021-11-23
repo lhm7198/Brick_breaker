@@ -52,6 +52,7 @@ void Paddle::set_Paddle_speedX(float paddle_speedX_){
 }
 void Paddle::set_Paddle_color(){
 	this->setFillColor(sf::Color(100, 100, 100));
+	this->setOutlineThickness(0);
 	if(active){
 		this->setOutlineThickness(1.25);
 		this->setOutlineColor(sf::Color::Red);
@@ -60,10 +61,10 @@ void Paddle::set_Paddle_color(){
 void Paddle::set_Paddle_bomb(int num){
 	num_bomb = num;
 }
-void Paddle::set_Paddle_bomb_active(){
+void Paddle::set_Paddle_active(){
 	active = true;
 }
-void Paddle::set_Paddle_bomb_inactive(){
+void Paddle::set_Paddle_inactive(){
 	active = false;
 }
 

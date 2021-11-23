@@ -34,8 +34,8 @@ public:
 	void set_Paddle_speedX(float paddle_speedX_);
 	void set_Paddle_color();
 	void set_Paddle_bomb(int num);
-	void set_Paddle_bomb_active();
-	void set_Paddle_bomb_inactive();
+	void set_Paddle_active();
+	void set_Paddle_inactive();
 
 	void Paddle_move(int screen_width, int screen_height);
 };

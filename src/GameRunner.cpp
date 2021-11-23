@@ -164,8 +164,8 @@ void Game::receiveKeyinputs(){
 				p1_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
 				break;
 			case sf::Keyboard::F:
-				if(p1_paddle[0].get_Paddle_bomb()){
-					p1_paddle[0].set_Paddle_bomb_active();
+				if(p1_paddle[0].get_Paddle_bomb() && !p1_paddle[0].get_Paddle_active()){
+					p1_paddle[0].set_Paddle_active();
 					p1_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
 				}
 				break;
@@ -174,6 +174,12 @@ void Game::receiveKeyinputs(){
 				break;
 			case sf::Keyboard::Right:
 				p2_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
+				break;
+			case sf::Keyboard::PageDown:
+				if(p2_paddle[0].get_Paddle_bomb() && !p2_paddle[0].get_Paddle_active()){
+					p2_paddle[0].set_Paddle_active();
+					p2_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
+				}
 				break;
 			case sf::Keyboard::Return:
 				is_game_start = true;
@@ -215,7 +221,7 @@ void Game::object_draw(){
 		window.draw(p2_paddle[i]);
 	}
 	for(int i=0; i<balls.size(); i++){ // balls
-		//balls[i].set_Ball_color();
+		balls[i].set_Ball_color();
 		window.draw(balls[i]);
 	}
 }
