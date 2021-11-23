@@ -15,11 +15,9 @@ class Paddle : public sf::RectangleShape{
 private:
 	float paddle_width;
 	float paddle_height;
-	float paddle_x;
-	float paddle_y;
 	float paddle_speedX;
-	bool is_paddle_move_right;
-	bool is_paddle_move_left;
+	int num_bomb;
+	bool active;
 public:
 	Paddle();
 
@@ -28,12 +26,16 @@ public:
 	float get_Paddle_x();
 	float get_Paddle_y();
 	float get_Paddle_speedX();
+	int get_Paddle_bomb();
+	bool get_Paddle_active();
 
 	void set_Paddle_size(float paddle_width_, float paddle_height_);
 	void set_Paddle_position(float paddle_x_, float paddle_y_);
 	void set_Paddle_speedX(float paddle_speedX_);
-	void set_Paddle_move_right(bool is_paddle_move_right_);
-	void set_Paddle_move_left(bool is_paddle_move_left_);
+	void set_Paddle_color();
+	void set_Paddle_bomb(int num);
+	void set_Paddle_bomb_active();
+	void set_Paddle_bomb_inactive();
 
 	void Paddle_move(int screen_width, int screen_height);
 };

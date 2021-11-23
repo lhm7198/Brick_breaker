@@ -36,22 +36,22 @@ Game::Game(int w, int h){
 	for(int i=0; i<BRICKS_PER_COL; i++){
 		for(int j=0; j<BRICKS_PER_ROW; j++){ // player1 bricks
 			Brick brick;
+			if(items1[i] == j) brick.set_Brick_item(i+1);
 			brick.set_Brick_size(brick_width, brick_height);
 			brick.set_Brick_position(gap + j*(brick_width + gap), gap + i*(brick_height + gap));
 			brick.set_Brick_hp(3-i);
 			brick.set_Brick_color();
-			if(items1[i] == j) brick.set_Brick_item(i+1);
 			p1_bricks.push_back(brick);
 		}
 	}
 	for(int i=0; i<BRICKS_PER_COL; i++){
 		for(int j=0; j<BRICKS_PER_ROW; j++){ // player2 bricks
 			Brick brick;
+			if(items2[i] == j) brick.set_Brick_item(i+1);
 			brick.set_Brick_size(brick_width, brick_height);
 			brick.set_Brick_position(gap + j*(brick_width + gap), screen_height - gap - brick_height - i*(brick_height + gap));
 			brick.set_Brick_hp(3-i);
 			brick.set_Brick_color();
-			if(items2[i] == j) brick.set_Brick_item(i+1);
 			p2_bricks.push_back(brick);
 		}
 	}
@@ -64,12 +64,14 @@ Game::Game(int w, int h){
 	paddle1.set_Paddle_size(paddle_width, paddle_height);
 	paddle1.set_Paddle_position(w*0.5 - paddle_width/2, h*0.2);
 	paddle1.set_Paddle_speedX(0);
+	paddle1.set_Paddle_color();
 	p1_paddle.push_back(paddle1);
 
 	Paddle paddle2; // player2 paddle
 	paddle2.set_Paddle_size(paddle_width, paddle_height);
 	paddle2.set_Paddle_position(w*0.5 - paddle_width/2, h*0.8 - paddle_height);
 	paddle2.set_Paddle_speedX(0);
+	paddle2.set_Paddle_color();
 	p2_paddle.push_back(paddle2);
 
 	// Balls
@@ -142,10 +144,11 @@ void Game::gameRunning(){
 			p1_paddle[0].Paddle_move(screen_width, screen_height); // player1 paddle move
 			p2_paddle[0].Paddle_move(screen_width, screen_height); // player2 paddle move
 			balls[0].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball1 move
-			//balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
+			balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
 			object_draw();
 		}
 		//printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
+		printf("%d %d\n", p1_paddle[0].get_Paddle_bomb(), p2_paddle[0].get_Paddle_bomb());
 		object_draw();
 		window.display();
 	}
@@ -159,6 +162,12 @@ void Game::receiveKeyinputs(){
 				break;
 			case sf::Keyboard::D:
 				p1_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
+				break;
+			case sf::Keyboard::F:
+				if(p1_paddle[0].get_Paddle_bomb()){
+					p1_paddle[0].set_Paddle_bomb_active();
+					p1_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
+				}
 				break;
 			case sf::Keyboard::Left:
 				p2_paddle[0].set_Paddle_speedX(-PADDLE_SPEED);
@@ -188,18 +197,25 @@ void Game::object_draw(){
 	window.draw(p2_control);
 
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player1 bricks
-		if(p1_bricks[i].get_Brick_deleted() == false) window.draw(p1_bricks[i]);
+		if(p1_bricks[i].get_Brick_deleted() == true) continue;
+		p1_bricks[i].set_Brick_color();		
+		window.draw(p1_bricks[i]);
 	}
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player2 bricks
-		if(p2_bricks[i].get_Brick_deleted() == false) window.draw(p2_bricks[i]);
+		if(p2_bricks[i].get_Brick_deleted() == true) continue;
+		p2_bricks[i].set_Brick_color();		
+		window.draw(p2_bricks[i]);
 	}
 	for(int i=0; i<p1_paddle.size(); i++){ // player1 paddle
+		p1_paddle[i].set_Paddle_color();
 		window.draw(p1_paddle[i]);
 	}
 	for(int i=0; i<p2_paddle.size(); i++){ // player2 paddle
+		p2_paddle[i].set_Paddle_color();
 		window.draw(p2_paddle[i]);
 	}
 	for(int i=0; i<balls.size(); i++){ // balls
+		//balls[i].set_Ball_color();
 		window.draw(balls[i]);
 	}
 }

@@ -51,11 +51,13 @@ void Brick::set_Brick_hp(int brick_hp_){
 }
 void Brick::set_Brick_color(){
 	this->setFillColor(sf::Color(255, 120*(3-brick_hp), 0));
+	if(item){
+		this->setOutlineThickness(1.25);
+		this->setOutlineColor(sf::Color::Cyan);
+	}
 }
 void Brick::set_Brick_item(int item_){
-	item = item_;
-	this->setOutlineThickness(1.25);
-	this->setOutlineColor(sf::Color::Cyan);
+	item = item_;	
 }
 
 void Brick::set_Brick_deleted(){
