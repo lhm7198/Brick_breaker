@@ -51,11 +51,10 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 
 	// wall
 	if(get_Ball_x() - ball_radius < 0){ // left collision
-		set_Ball_speedX(-ball_speedX);
-		
+		if(ball_speedX < 0) set_Ball_speedX(-ball_speedX);	
 	}
 	else if(get_Ball_x() + 2*ball_radius >= screen_width){ // right collision
-		set_Ball_speedX(-ball_speedX);
+		if(ball_speedX > 0) set_Ball_speedX(-ball_speedX);
 	}
 	if(get_Ball_y() - ball_radius < 0){ // topside collision
 		set_Ball_speedY(-ball_speedY);
@@ -73,13 +72,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		if(this->get_Ball_y() - p1.get_Paddle_y() > p1.get_Paddle_height() && this->get_Ball_y() - p1.get_Paddle_y() < p1.get_Paddle_height() + 5){
 			if(this->get_Ball_x() + this->ball_radius > p1.get_Paddle_x() && this->get_Ball_x() - this->ball_radius < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
 				if(ball_speedX * p2.get_Paddle_speedX() > 0){
-					if(abs(ball_speedX) < 6.0){
+					if(abs(ball_speedX) < 5.2){
 						ball_speedX = ball_speedX * 1.2;
 						ball_speedY = ball_speedY * 0.75;
 					}
 				}
 				else{
-					if(abs(ball_speedX) > 2.5){
+					if(abs(ball_speedX) > 2.7){
 						ball_speedX = ball_speedX / 1.2;
 						ball_speedY = ball_speedY * 1.33;
 					}
@@ -91,13 +90,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		if(this->get_Ball_y() - p2.get_Paddle_y() > p2.get_Paddle_height() && this->get_Ball_y() - p2.get_Paddle_y() < p2.get_Paddle_height() + 5){ // collide with p2_paddle
 			if(this->get_Ball_x() + this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() - this->ball_radius < p2.get_Paddle_x() + p2.get_Paddle_width()){
 				if(ball_speedX * p2.get_Paddle_speedX() > 0){
-					if(abs(ball_speedX) < 5.5){
+					if(abs(ball_speedX) < 5.2){
 						ball_speedX = ball_speedX * 1.2;
 						ball_speedY = ball_speedY * 0.75;
 					}
 				}
 				else{
-					if(abs(ball_speedX) > 2.5){
+					if(abs(ball_speedX) > 2.7){
 						ball_speedX = ball_speedX / 1.2;
 						ball_speedY = ball_speedY * 1.33;
 					}
@@ -112,13 +111,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		if(p1.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p1.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p1_paddle
 			if(this->get_Ball_x() + 2*this->ball_radius > p1.get_Paddle_x() && this->get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){
 				if(ball_speedX * p1.get_Paddle_speedX() > 0){
-					if(abs(ball_speedX) < 6.0){
+					if(abs(ball_speedX) < 5.2){
 						ball_speedX = ball_speedX * 1.2;
 						ball_speedY = ball_speedY * 0.75;
 					}
 				}
 				else{
-					if(abs(ball_speedX) > 2.5){
+					if(abs(ball_speedX) > 2.7){
 						ball_speedX = ball_speedX / 1.2;
 						ball_speedY = ball_speedY * 1.33;
 					}
@@ -130,13 +129,13 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		if(p2.get_Paddle_y() - this->get_Ball_y() > 1.5*this->ball_radius && p2.get_Paddle_y() - this->get_Ball_y() < 1.5*this->ball_radius + 5){ // collide with p2_paddle
 			if(this->get_Ball_x() + 2*this->ball_radius > p2.get_Paddle_x() && this->get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){
 				if(ball_speedX * p2.get_Paddle_speedX() > 0){
-					if(abs(ball_speedX) < 6.0){
+					if(abs(ball_speedX) < 5.2){
 						ball_speedX = ball_speedX * 1.2;
 						ball_speedY = ball_speedY * 0.75;
 					}
 				}
 				else{
-					if(abs(ball_speedX) > 2.5){
+					if(abs(ball_speedX) > 2.7){
 						ball_speedX = ball_speedX / 1.2;
 						ball_speedY = ball_speedY * 1.33;
 					}
@@ -207,22 +206,6 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 					}
 				}
 			}
-			//if(get_Ball_speedX() > 0){ // collide with p1_bricks leftside
-			//	if(get_Ball_x() + ball_radius >= p1_b[i].get_Brick_x() - 5 && get_Ball_x() + ball_radius < p1_b[i].get_Brick_x()){	
-			//		if(get_Ball_y() - ball_radius >= p1_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p1_b[i].get_Brick_y() + p1_b[i].get_Brick_height()){
-			//			set_Ball_speedX(-ball_speedX);
-			//			p1_b[i].set_Brick_deleted();
-			//		}
-			//	}
-			//}
-			//else{ // collide with p1_bricks rightside
-			//	if(get_Ball_x() - ball_radius > p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() + 5){
-			//		if(get_Ball_y() - ball_radius >= p1_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p1_b[i].get_Brick_y() + p1_b[i].get_Brick_height()){
-			//			set_Ball_speedX(-ball_speedX);
-			//			p1_b[i].set_Brick_deleted();
-			//		}
-			//	}
-			//}
 		}
 		// p2_brick
 		if(p2_b[i].get_Brick_deleted() == false){
@@ -282,22 +265,6 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 					}
 				}
 			}
-			/*if(get_Ball_speedX() > 0){ // collide with p2_bricks leftside
-				if(get_Ball_x() + ball_radius >= p2_b[i].get_Brick_x() - 5 && get_Ball_x() + ball_radius < p2_b[i].get_Brick_x()){	
-					if(get_Ball_y() - ball_radius >= p2_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p2_b[i].get_Brick_y() + p2_b[i].get_Brick_height()){
-						set_Ball_speedX(-ball_speedX);
-						p2_b[i].set_Brick_deleted();
-					}
-				}
-			}
-			else{ // collide with p2_bricks rightside
-				if(get_Ball_x() - ball_radius > p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() && get_Ball_x() - ball_radius < p2_b[i].get_Brick_x() + p2_b[i].get_Brick_width() + 5){
-					if(get_Ball_y() - ball_radius >= p2_b[i].get_Brick_y() && get_Ball_y() + ball_radius < p2_b[i].get_Brick_y() + p2_b[i].get_Brick_height()){
-						set_Ball_speedX(-ball_speedX);
-						p2_b[i].set_Brick_deleted();
-					}
-				}
-			}*/
 		}
 	}
 }

@@ -12,6 +12,7 @@ Brick::Brick(){
 	brick_width = 0;
 	brick_height = 0;
 	brick_hp = 0;
+	item = 0;
 	deleted = false;
 };
 
@@ -30,6 +31,9 @@ float Brick::get_Brick_y(){
 int Brick::get_Brick_hp(){
 	return brick_hp;
 }
+int Brick::get_Brick_item(){
+	return item;
+}
 bool Brick::get_Brick_deleted(){
 	return this->deleted;
 }
@@ -38,7 +42,6 @@ void Brick::set_Brick_size(float brick_width_, float brick_height_){
 	brick_width=brick_width_;
 	brick_height=brick_height_;
 	this->setSize(sf::Vector2f(brick_width_, brick_height_));
-	this->setFillColor(sf::Color(255, 0, 0));
 }
 void Brick::set_Brick_position(float brick_x_, float brick_y_){
 	this->setPosition(brick_x_, brick_y_);
@@ -48,6 +51,11 @@ void Brick::set_Brick_hp(int brick_hp_){
 }
 void Brick::set_Brick_color(){
 	this->setFillColor(sf::Color(255, 120*(3-brick_hp), 0));
+}
+void Brick::set_Brick_item(int item_){
+	item = item_;
+	this->setOutlineThickness(1.25);
+	this->setOutlineColor(sf::Color::Cyan);
 }
 
 void Brick::set_Brick_deleted(){

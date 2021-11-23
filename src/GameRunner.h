@@ -11,6 +11,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <cstdlib> // rand()
+#include <ctime> // time()
 #include "Brick.h"
 #include "Ball.h"
 #include "Paddle.h"

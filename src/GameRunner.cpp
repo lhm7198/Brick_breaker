@@ -5,9 +5,8 @@
  *
  *	Copyright 2021 by 3-codiots
  */
-#include "iostream"
 #include "GameRunner.h"
-#include "stdio.h"
+#include <stdio.h>
 
 void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start, sf::Font* font1, sf::Font* font2);
 void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::Font* font);
@@ -18,7 +17,15 @@ Game::Game(int w, int h){
 	is_start_page = true;
 	is_game_start = false;
 
-	// Players
+	// items
+	srand(time(NULL));
+	int items1[3] = {0};
+	int items2[3] = {0};
+	for(int i=0; i<3; i++){
+		items1[i] = rand() % BRICKS_PER_ROW;
+		items2[i] = rand() % BRICKS_PER_ROW;
+		printf("%d %d\n", items1[i], items2[i]);
+	}
 
 	// Bricks
 	float brick_width = w / (BRICKS_PER_ROW * 1.1);
@@ -33,6 +40,7 @@ Game::Game(int w, int h){
 			brick.set_Brick_position(gap + j*(brick_width + gap), gap + i*(brick_height + gap));
 			brick.set_Brick_hp(3-i);
 			brick.set_Brick_color();
+			if(items1[i] == j) brick.set_Brick_item(i+1);
 			p1_bricks.push_back(brick);
 		}
 	}
@@ -43,6 +51,7 @@ Game::Game(int w, int h){
 			brick.set_Brick_position(gap + j*(brick_width + gap), screen_height - gap - brick_height - i*(brick_height + gap));
 			brick.set_Brick_hp(3-i);
 			brick.set_Brick_color();
+			if(items2[i] == j) brick.set_Brick_item(i+1);
 			p2_bricks.push_back(brick);
 		}
 	}
@@ -136,7 +145,7 @@ void Game::gameRunning(){
 			//balls[1].Ball_move(screen_width, screen_height, p1_paddle[0], p2_paddle[0], p1_bricks, p2_bricks); // ball2 move
 			object_draw();
 		}
-		printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
+		//printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
 		object_draw();
 		window.display();
 	}
@@ -230,7 +239,7 @@ void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::F
 
 	text->setString("Press Enter to start");
 	p1_control->setString("A      D");
-	p2_control->setString("<-    ->");
+	p2_control->setString("<-     ->");
 
 	text->setFont(*font);
 	p1_control->setFont(*font);
@@ -245,6 +254,6 @@ void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::F
 	p2_control->setFillColor(sf::Color(250, 250, 250, 100));
 
 	text->setPosition(100.f, 450.f);
-	p1_control->setPosition(160.f, 100.f);
+	p1_control->setPosition(160.f, 85.f);
 	p2_control->setPosition(160.f, 650.f);
 }
