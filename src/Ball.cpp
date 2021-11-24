@@ -7,8 +7,6 @@
  */
 
 #include "Ball.h"
-#include <stdio.h>
-#include <math.h>
 
 Ball::Ball() : CircleShape(0){
 	ball_radius = 0;

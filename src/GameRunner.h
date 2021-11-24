@@ -13,6 +13,7 @@
 #include <vector>
 #include <cstdlib> // rand()
 #include <ctime> // time()
+#include <cmath> // abs()
 #include "Brick.h"
 #include "Ball.h"
 #include "Paddle.h"
@@ -24,7 +25,7 @@ private:
 	const int BRICKS_PER_COL = 3;
 	const float BALL_RADIUS = 6;
 	const float PADDLE_SPEED = 5.0;
-	const float BALL_SPEED = 3.0;
+	const float BALL_SPEED = 5.0;
 	
 	// variable
 	int screen_width;

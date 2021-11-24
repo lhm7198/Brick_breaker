@@ -28,7 +28,6 @@ Game::Game(int w, int h){
 	for(int i=0; i<3; i++){
 		items1[i] = rand() % BRICKS_PER_ROW;
 		items2[i] = rand() % BRICKS_PER_ROW;
-		printf("%d %d\n", items1[i], items2[i]);
 	}
 
 	// Bricks
@@ -75,6 +74,9 @@ Game::Game(int w, int h){
 	p2.set_Paddle_position(w*0.5 - paddle_width/2, h*0.8 - paddle_height);
 	p2.set_Paddle_speedX(0);
 	p2.set_Paddle_color();
+
+	p1.set_Paddle_item(ITEM3, 10);
+	p2.set_Paddle_item(ITEM3, 10);
 
 	// Balls
 	Ball ball1; // ball1
@@ -178,7 +180,7 @@ void Game::gameRunning(){
 			p1_item3_timer = false;
 			p1_item3_t = 0;
 			p1.set_Paddle_item_inactive(ITEM3);
-			p2.set_Paddle_speedX(p2.get_Paddle_speedX() * 1.5);
+			p2.set_Paddle_speedX(p2.get_Paddle_speedX() * 2);
 		}
 		if(p2_item2_t > delay){
 			p2_item2_timer = false;
@@ -190,9 +192,12 @@ void Game::gameRunning(){
 			p2_item3_timer = false;
 			p2_item3_t = 0;
 			p2.set_Paddle_item_inactive(ITEM3);
-			p1.set_Paddle_speedX(p1.get_Paddle_speedX() * 1.5);
+			p1.set_Paddle_speedX(p1.get_Paddle_speedX() * 2);
 		}
-		printf("%f\n", p1_item2_t);
+		printf("%f %f %f %f\n", p1.get_Paddle_speedX(), p2.get_Paddle_speedX(), p1_item3_t, p2_item3_t);
+		//printf("%d %d\n", p1.get_Paddle_item(ITEM1), p2.get_Paddle_item(ITEM1));
+		//printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
+		//printf("%f\n", p1_item2_t);
 		object_draw();
 		window.display();
 	}
@@ -203,13 +208,15 @@ void Game::receiveKeyinputs(){
 		switch(event.key.code){
 			// player1
 			case sf::Keyboard::A:
-				p1.set_Paddle_speedX(-PADDLE_SPEED);
+				if(p1.get_Paddle_speedX() != 0) p1.set_Paddle_speedX(-abs(p1.get_Paddle_speedX()));
+				else p1.set_Paddle_speedX(-PADDLE_SPEED);
 				break;
 			case sf::Keyboard::S:
 				p1.set_Paddle_speedX(0);
 				break;
 			case sf::Keyboard::D:
-				p1.set_Paddle_speedX(PADDLE_SPEED);
+				if(p1.get_Paddle_speedX() != 0) p1.set_Paddle_speedX(abs(p1.get_Paddle_speedX()));
+				else p1.set_Paddle_speedX(PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Q:
 				if(p1.get_Paddle_item(ITEM1) && !p1.get_Paddle_item_work(ITEM1)){
@@ -229,19 +236,21 @@ void Game::receiveKeyinputs(){
 				if(p1.get_Paddle_item(ITEM3) && !p1.get_Paddle_item_work(ITEM3)){
 					p1.set_Paddle_item_active(ITEM3);
 					p1.set_Paddle_item(ITEM3, p1.get_Paddle_item(ITEM3) - 1);
-					p2.set_Paddle_speedX(p2.get_Paddle_speedX() / 1.5);
+					p2.set_Paddle_speedX(p2.get_Paddle_speedX() * 0.5);
 					p1_item3_timer = true;
 				}
 				break;
 			// player2
 			case sf::Keyboard::Left:
-				p2.set_Paddle_speedX(-PADDLE_SPEED);
+				if(p2.get_Paddle_speedX() != 0) p2.set_Paddle_speedX(-abs(p2.get_Paddle_speedX()));
+				else p2.set_Paddle_speedX(-PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Down:
 				p2.set_Paddle_speedX(0);
 				break;
 			case sf::Keyboard::Right:
-				p2.set_Paddle_speedX(PADDLE_SPEED);
+				if(p2.get_Paddle_speedX() != 0) p2.set_Paddle_speedX(abs(p2.get_Paddle_speedX()));
+				else p2.set_Paddle_speedX(PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Delete:
 				if(p2.get_Paddle_item(ITEM1) && !p2.get_Paddle_item_work(ITEM1)){
@@ -261,7 +270,7 @@ void Game::receiveKeyinputs(){
 				if(p2.get_Paddle_item(ITEM3) && !p2.get_Paddle_item_work(ITEM3)){
 					p2.set_Paddle_item_active(ITEM3);
 					p2.set_Paddle_item(ITEM3, p2.get_Paddle_item(ITEM3) - 1);
-					p1.set_Paddle_speedX(p1.get_Paddle_speedX() / 1.5);
+					p1.set_Paddle_speedX(p1.get_Paddle_speedX() * 0.5);
 					p2_item3_timer = true;
 				}
 				break;
@@ -335,18 +344,18 @@ void Game::ball_paddle_collision(){
 	for(int i=0; i<balls.size(); i++){
 		if(balls[i].get_Ball_speedY() < 0){ // when ball moves down to top
 			if(balls[i].get_Ball_y() - balls[i].get_Ball_radius() >= p1.get_Paddle_y() + p1.get_Paddle_height() 
-				&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p1.get_Paddle_y() + p1.get_Paddle_height() - balls[i].get_Ball_speedY()){
+			&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p1.get_Paddle_y() + p1.get_Paddle_height() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p1.get_Paddle_x() && balls[i].get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
-					if(p1.get_Paddle_item_work(ITEM1) && !p1.get_Paddle_item_work(ITEM1)){ // p1 was active
-						p1.set_Paddle_item_active(ITEM1);
+					if(p1.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p1.set_Paddle_item_inactive(ITEM1);
+						balls[i].set_Ball_active();
 					}
 
 					if(balls[i].get_Ball_speedX() * p1.get_Paddle_speedX() > 0){ // accelerate
 						balls[i].set_Ball_speedX(fast(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(slow(balls[i].get_Ball_speedY()));
 					}
-					else{
+					else{ // unaccelerate
 						balls[i].set_Ball_speedX(slow(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(fast(balls[i].get_Ball_speedY()));
 					}
@@ -355,18 +364,18 @@ void Game::ball_paddle_collision(){
 				}
 			}
 			if(balls[i].get_Ball_y() - balls[i].get_Ball_radius() >= p2.get_Paddle_y() + p2.get_Paddle_height() 
-				&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p2.get_Paddle_y() + p2.get_Paddle_height() - balls[i].get_Ball_speedY()){ 
+			&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p2.get_Paddle_y() + p2.get_Paddle_height() - balls[i].get_Ball_speedY()){ 
 				if(balls[i].get_Ball_x() > p2.get_Paddle_x() && balls[i].get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
-					if(p2.get_Paddle_item_work(ITEM1) && !p2.get_Paddle_item_work(ITEM1)){ // p2 was active
-						p1.set_Paddle_item_active(ITEM1);
+					if(p2.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p2.set_Paddle_item_inactive(ITEM1);
+						balls[i].set_Ball_active();
 					}				
 
 					if(balls[i].get_Ball_speedX() * p2.get_Paddle_speedX() > 0){ // accelerate
 						balls[i].set_Ball_speedX(fast(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(slow(balls[i].get_Ball_speedY()));
 					}
-					else{
+					else{ // unaccelerate
 						balls[i].set_Ball_speedX(slow(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(fast(balls[i].get_Ball_speedY()));
 					}
@@ -378,18 +387,18 @@ void Game::ball_paddle_collision(){
 		}
 		else{ // when ball moves top to down
 			if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() <= p1.get_Paddle_y() 
-				&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p1.get_Paddle_y() - balls[i].get_Ball_speedY()){
+			&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p1.get_Paddle_y() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p1.get_Paddle_x() && balls[i].get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
-					if(p1.get_Paddle_item_work(ITEM1) && !p1.get_Paddle_item_work(ITEM1)){ // p1 was active
-						p1.set_Paddle_item_active(ITEM1);
+					if(p1.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p1.set_Paddle_item_inactive(ITEM1);
+						balls[i].set_Ball_active();
 					}
 
 					if(balls[i].get_Ball_speedX() * p1.get_Paddle_speedX() > 0){ // accelerate
 						balls[i].set_Ball_speedX(fast(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(slow(balls[i].get_Ball_speedY()));
 					}
-					else{
+					else{ // unaccelerate
 						balls[i].set_Ball_speedX(slow(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(fast(balls[i].get_Ball_speedY()));
 					}
@@ -397,18 +406,19 @@ void Game::ball_paddle_collision(){
 					balls[i].set_Ball_speedY(-balls[i].get_Ball_speedY());
 				}
 			}
-			if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() <= p2.get_Paddle_y() && balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p2.get_Paddle_y() - balls[i].get_Ball_speedY()){
+			if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() <= p2.get_Paddle_y() 
+			&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p2.get_Paddle_y() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p2.get_Paddle_x() && balls[i].get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
-					if(p2.get_Paddle_item_work(ITEM1) && !p2.get_Paddle_item_work(ITEM1)){ // p2 was active
-						p1.set_Paddle_item_active(ITEM1);
+					if(p2.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p2.set_Paddle_item_inactive(ITEM1);
+						balls[i].set_Ball_active();
 					}
 
 					if(balls[i].get_Ball_speedX() * p2.get_Paddle_speedX() > 0){ // accelerate
 						balls[i].set_Ball_speedX(fast(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(slow(balls[i].get_Ball_speedY()));
 					}
-					else{
+					else{ // unaccelerate
 						balls[i].set_Ball_speedX(slow(balls[i].get_Ball_speedX()));
 						balls[i].set_Ball_speedY(fast(balls[i].get_Ball_speedY()));
 					}
@@ -638,7 +648,7 @@ void Game::p1_get_item(Brick &brick){
 			p1.set_Paddle_item(ITEM2, 3);
 			break;
 		case 3:
-			p1.set_Paddle_item(ITEM1, 3);
+			p1.set_Paddle_item(ITEM1, 10);
 			break;
 		default:
 			break;		
@@ -655,7 +665,7 @@ void Game::p2_get_item(Brick &brick){
 			p2.set_Paddle_item(ITEM2, 3);
 			break;
 		case 3:
-			p2.set_Paddle_item(ITEM1, 3);
+			p2.set_Paddle_item(ITEM1, 10);
 			break;
 		default:
 			break;		
@@ -663,32 +673,36 @@ void Game::p2_get_item(Brick &brick){
 }
 
 float slow(float speed){
-	float array[5]={6.144,5.831,5,4,3.5};
+	float array[5]={4.9152, 4.6648, 4, 3.2, 2.8};
 
 	for(int i=0 ; i<4 ; i++){
 		if(speed==array[i]){
-			speed==array[i+1];
+			speed=array[i+1];
+			break;
 		}
 	}
 	for(int i=0 ; i<4 ; i++){
 		if(speed==-1*array[i]){
-			speed==-1*array[i+1];
+			speed=-1*array[i+1];
+			break;
 		}
 	}
 
 	return speed;
 }
 float fast(float speed){
-	float array[5]={6.144,5.831,5,4,3.5};
+	float array[5]={4.9152, 4.6648, 4, 3.2, 2.8};
 
 	for(int i=1 ; i<5 ; i++){
 		if(speed==array[i]){
-			speed==array[i-1];
+			speed=array[i-1];
+			break;
 		}
 	}
-	for(int i=0 ; i<4 ; i++){
+	for(int i=1 ; i<5 ; i++){
 		if(speed==-1*array[i]){
-			speed==-1*array[i-1];
+			speed=-1*array[i-1];
+			break;
 		}
 	}
 
