@@ -10,6 +10,7 @@
 #define GAMERUNNER_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <cstdlib> // rand()
 #include <ctime> // time()
@@ -38,6 +39,8 @@ private:
 	float gap;
 	std::vector<Brick> p1_b;
 	std::vector<Brick> p2_b;
+	sf::SoundBuffer bufferBricks;
+	sf::Sound soundBricks;
 
 	// Paddle
 	Paddle p1;
@@ -46,6 +49,12 @@ private:
 	bool p1_item3_timer;
 	bool p2_item2_timer;
 	bool p2_item3_timer;
+	sf::SoundBuffer bufferPaddle;
+	sf::Sound soundPaddle;
+
+	// Bomb(item)
+	sf::SoundBuffer bufferBomb;
+	sf::Sound soundBomb;
 
 	// Ball
 	std::vector<Ball> balls;
@@ -55,6 +64,9 @@ private:
 
 	// Window
 	sf::RenderWindow window;
+	
+	//bgm
+	sf::Music bgm;
 public:
 	Game(int w, int h);
 
@@ -66,7 +78,6 @@ public:
 	void ball_wall_collision();
 	void ball_paddle_collision();
 	void ball_brick_collision(Ball &ball);
-
 	void p1_get_item(Brick &brick);
 	void p2_get_item(Brick &brick);
 };

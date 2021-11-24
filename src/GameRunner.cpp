@@ -29,6 +29,11 @@ Game::Game(int w, int h){
 		items1[i] = rand() % BRICKS_PER_ROW;
 		items2[i] = rand() % BRICKS_PER_ROW;
 	}
+	if(!bufferBomb.loadFromFile("sound/bomb.wav"))
+		printf("cannot play");
+	soundBomb.setBuffer(bufferBomb);
+	soundBomb.setLoop(false);
+	soundBomb.setVolume(50.0);
 
 	// Bricks
 	float brick_width = w / (BRICKS_PER_ROW * 1.1);
@@ -56,6 +61,11 @@ Game::Game(int w, int h){
 			p2_b.push_back(brick);
 		}
 	}
+	if(!bufferBricks.loadFromFile("sound/collision.wav"))
+		printf("cannot play");
+	soundBricks.setBuffer(bufferBricks);
+	soundBricks.setLoop(false);
+	soundBricks.setVolume(50.0);
 
 	// Paddles
 	float paddle_width = w * 0.2;
@@ -77,6 +87,15 @@ Game::Game(int w, int h){
 
 	p1.set_Paddle_item(ITEM3, 10);
 	p2.set_Paddle_item(ITEM3, 10);
+	p1.set_Paddle_item(ITEM1, 10);
+	p2.set_Paddle_item(ITEM1, 10);
+	
+	if(!bufferPaddle.loadFromFile("sound/collision.wav"))
+		printf("cannot play");
+	soundPaddle.setBuffer(bufferPaddle);
+	soundPaddle.setLoop(false);
+	soundPaddle.setVolume(50.0);
+
 
 	// Balls
 	Ball ball1; // ball1
@@ -96,6 +115,11 @@ Game::Game(int w, int h){
 	// Window
 	window.create(sf::VideoMode(w, h), "3-codiots");
 	window.setFramerateLimit(60);
+
+	//bgm
+	if(!bgm.openFromFile("sound/bgm1.wav"))
+		printf("cannot open bgm1.wav");
+	bgm.setVolume(25.0);
 }
 
 void Game::gameStart(){
@@ -194,7 +218,7 @@ void Game::gameRunning(){
 			p2.set_Paddle_item_inactive(ITEM3);
 			p1.set_Paddle_speedX(p1.get_Paddle_speedX() * 2);
 		}
-		printf("%f %f %f %f\n", p1.get_Paddle_speedX(), p2.get_Paddle_speedX(), p1_item3_t, p2_item3_t);
+		//printf("%f %f %f %f\n", p1.get_Paddle_speedX(), p2.get_Paddle_speedX(), p1_item3_t, p2_item3_t);
 		//printf("%d %d\n", p1.get_Paddle_item(ITEM1), p2.get_Paddle_item(ITEM1));
 		//printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
 		//printf("%f\n", p1_item2_t);
@@ -346,6 +370,7 @@ void Game::ball_paddle_collision(){
 			if(balls[i].get_Ball_y() - balls[i].get_Ball_radius() >= p1.get_Paddle_y() + p1.get_Paddle_height() 
 			&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p1.get_Paddle_y() + p1.get_Paddle_height() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p1.get_Paddle_x() && balls[i].get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
+					soundPaddle.play();
 					if(p1.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p1.set_Paddle_item_inactive(ITEM1);
 						balls[i].set_Ball_active();
@@ -366,6 +391,7 @@ void Game::ball_paddle_collision(){
 			if(balls[i].get_Ball_y() - balls[i].get_Ball_radius() >= p2.get_Paddle_y() + p2.get_Paddle_height() 
 			&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p2.get_Paddle_y() + p2.get_Paddle_height() - balls[i].get_Ball_speedY()){ 
 				if(balls[i].get_Ball_x() > p2.get_Paddle_x() && balls[i].get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
+					soundPaddle.play();
 					if(p2.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p2.set_Paddle_item_inactive(ITEM1);
 						balls[i].set_Ball_active();
@@ -389,6 +415,7 @@ void Game::ball_paddle_collision(){
 			if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() <= p1.get_Paddle_y() 
 			&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p1.get_Paddle_y() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p1.get_Paddle_x() && balls[i].get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
+					soundPaddle.play();
 					if(p1.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p1.set_Paddle_item_inactive(ITEM1);
 						balls[i].set_Ball_active();
@@ -409,6 +436,7 @@ void Game::ball_paddle_collision(){
 			if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() <= p2.get_Paddle_y() 
 			&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p2.get_Paddle_y() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p2.get_Paddle_x() && balls[i].get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
+					soundPaddle.play();
 					if(p2.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
 						p2.set_Paddle_item_inactive(ITEM1);
 						balls[i].set_Ball_active();
@@ -441,7 +469,7 @@ void Game::ball_brick_collision(Ball &ball){
 
 				if(ball.get_Ball_x() >= p1_b[i].get_Brick_x() - gap*0.5 && ball.get_Ball_x() < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() + gap*0.5){
 					ball.set_Ball_speedY(-ball.get_Ball_speedY());
-
+					
 					collide_flag = true;
 				}
 			}
@@ -459,6 +487,9 @@ void Game::ball_brick_collision(Ball &ball){
 		}
 
 		if(collide_flag){
+			if(ball.get_Ball_active()) soundBomb.play();
+			else soundBricks.play(); 
+
 			if(ball.get_Ball_active()){
 				ball.set_Ball_inactive();
 				if(i >= 10 && p1_b[i-10].get_Brick_hp()){ // top
@@ -481,6 +512,7 @@ void Game::ball_brick_collision(Ball &ball){
 
 			p1_b[i].set_Brick_hp(p1_b[i].get_Brick_hp() - 1); // self
 			if(p1_b[i].get_Brick_hp() == 0) p2_get_item(p1_b[i]);
+			
 			continue;
 		}
 
@@ -492,6 +524,8 @@ void Game::ball_brick_collision(Ball &ball){
 					ball.set_Ball_speedX(-ball.get_Ball_speedX());
 
 					collide_flag = true;
+					
+					soundBricks.play();
 				}
 			}
 		}
@@ -503,11 +537,16 @@ void Game::ball_brick_collision(Ball &ball){
 					ball.set_Ball_speedX(-ball.get_Ball_speedX());
 
 					collide_flag = true;
+					
+					soundBricks.play();
 				}
 			}
 		}
 
 		if(collide_flag){
+			if(ball.get_Ball_active()) soundBomb.play();
+			else soundBricks.play(); 
+
 			if(ball.get_Ball_active()){
 				ball.set_Ball_inactive();
 				if(i >= 10 && p1_b[i-10].get_Brick_hp()){ // top
@@ -532,6 +571,7 @@ void Game::ball_brick_collision(Ball &ball){
 			if(p1_b[i].get_Brick_hp() == 0) p2_get_item(p1_b[i]);
 		}
 	}
+
 
 	// p2_brick
 	for(int i=0; i<p2_b.size(); i++){
@@ -562,6 +602,9 @@ void Game::ball_brick_collision(Ball &ball){
 		}
 
 		if(collide_flag){
+			if(ball.get_Ball_active()) soundBomb.play();
+			else soundBricks.play(); 
+
 			if(ball.get_Ball_active()){
 				ball.set_Ball_inactive();
 				if(i < 20 && p2_b[i+10].get_Brick_hp()){ // top
@@ -611,6 +654,9 @@ void Game::ball_brick_collision(Ball &ball){
 		}
 
 		if(collide_flag){
+			if(ball.get_Ball_active()) soundBomb.play();
+			else soundBricks.play(); 
+
 			if(ball.get_Ball_active()){
 				ball.set_Ball_inactive();
 				if(i < 20 && p2_b[i+10].get_Brick_hp()){ // top
