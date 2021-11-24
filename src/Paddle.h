@@ -25,6 +25,9 @@ private:
 	bool item1_active;
 	bool item2_active;
 	bool item3_active;
+	float item1_time_left;
+	float item2_time_left;
+	float item3_time_left;
 public:
 	Paddle();
 

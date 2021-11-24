@@ -18,6 +18,9 @@ Paddle::Paddle(){
 	item1_active = false;
 	item2_active = false;
 	item3_active = false;
+	item1_time_left = 0;
+	item2_time_left = 0;
+	item3_time_left = 0;
 };
 
 float Paddle::get_Paddle_width(){

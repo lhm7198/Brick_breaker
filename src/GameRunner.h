@@ -31,17 +31,20 @@ private:
 	int screen_height;
 	bool is_start_page;
 	bool is_game_start;
+	bool is_game_end;
 
 	// Bricks
 	float gap;
-	int p1_bricks_num;
-	int p2_bricks_num;
-	std::vector<Brick> p1_bricks;
-	std::vector<Brick> p2_bricks;
+	std::vector<Brick> p1_b;
+	std::vector<Brick> p2_b;
 
 	// Paddle
-	std::vector<Paddle> p1_paddle;
-	std::vector<Paddle> p2_paddle;
+	Paddle p1;
+	Paddle p2;
+	bool p1_item2_timer;
+	bool p1_item3_timer;
+	bool p2_item2_timer;
+	bool p2_item3_timer;
 
 	// Ball
 	std::vector<Ball> balls;
@@ -58,6 +61,13 @@ public:
 	void gameRunning();
 	void receiveKeyinputs();
 	void object_draw();
+
+	void ball_wall_collision();
+	void ball_paddle_collision();
+	void ball_brick_collision(Ball &ball);
+
+	void p1_get_item(Brick &brick);
+	void p2_get_item(Brick &brick);
 };
 
 #endif

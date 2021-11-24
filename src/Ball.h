@@ -29,18 +29,17 @@ public:
 	float get_Ball_y();
 	float get_Ball_speedX();
 	float get_Ball_speedY();
+	bool get_Ball_active();
 
 	void set_Ball_size(float ball_radius_);
 	void set_Ball_position(float ball_x_, float ball_y_);
 	void set_Ball_speedX(float ball_speedX_);
 	void set_Ball_speedY(float ball_speedX_);
-	void set_gap(float gap_);
+	void set_Ball_active();
+	void set_Ball_inactive();
 	void set_Ball_color();
 
-	void Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2, std::vector<Brick> &p1_b, std::vector<Brick> &p2_b);
-
-	void p1_get_item(Brick &brick, Paddle &paddle);
-	void p2_get_item(Brick &brick, Paddle &paddle);
+	void Ball_move();
 };
 
 #endif
