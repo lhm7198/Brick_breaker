@@ -12,6 +12,7 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::Font* font);
 void player1_win(sf::Text* text1, sf::Text* text2, sf::Font* font);
 void player2_win(sf::Text* text1, sf::Text* text2, sf::Font* font);
+void print_timer(sf::Text* timer, sf::Font* font, float time, float x, float y);
 float fast(float speed);
 float slow(float speed);
 
@@ -31,7 +32,7 @@ Game::Game(int w, int h){
 		items1[i] = rand() % BRICKS_PER_ROW;
 		items2[i] = rand() % BRICKS_PER_ROW;
 	}
-	if(!bufferBomb.loadFromFile("sound/bomb.wav"))
+	if(!bufferBomb.loadFromFile("./sound/bomb.wav"))
 		printf("cannot play");
 	soundBomb.setBuffer(bufferBomb);
 	soundBomb.setLoop(false);
@@ -63,7 +64,7 @@ Game::Game(int w, int h){
 			p2_b.push_back(brick);
 		}
 	}
-	if(!bufferBricks.loadFromFile("sound/collision.wav"))
+	if(!bufferBricks.loadFromFile("./sound/collision.wav"))
 		printf("cannot play");
 	soundBricks.setBuffer(bufferBricks);
 	soundBricks.setLoop(false);
@@ -92,7 +93,7 @@ Game::Game(int w, int h){
 	p1.set_Paddle_item(ITEM1, 10);
 	p2.set_Paddle_item(ITEM1, 10);
 
-	if(!bufferPaddle.loadFromFile("sound/collision.wav"))
+	if(!bufferPaddle.loadFromFile("./sound/collision.wav"))
 		printf("cannot play");
 	soundPaddle.setBuffer(bufferPaddle);
 	soundPaddle.setLoop(false);
@@ -119,7 +120,7 @@ Game::Game(int w, int h){
 	window.setFramerateLimit(60);
 
 	//bgm
-	if(!bgm.openFromFile("sound/bgm1.wav"))
+	if(!bgm.openFromFile("./sound/bgm1.wav"))
 		printf("cannot open bgm1.wav");
 	bgm.setVolume(25.0);
 }
@@ -168,6 +169,7 @@ void Game::gameRunning(){
 	sf::Clock clock;
 	float p1_item2_t = 0, p1_item3_t = 0;
 	float p2_item2_t = 0, p2_item3_t = 0;
+	bool timer_flag[4]={0,};
 	float delay = 10;
 	while(window.isOpen() && !is_game_end){
 		if(p1_item2_timer) p1_item2_t += clock.getElapsedTime().asSeconds();
@@ -196,32 +198,60 @@ void Game::gameRunning(){
 			ball_brick_collision(balls[1]);
 		}
 
+		sf::Font font;
+		font.loadFromFile("NanumGothic.ttf");
+		sf::Text timer[4];
+
 		if(p1_item2_t > delay){
 			p1_item2_timer = false;
 			p1_item2_t = 0;
 			p1.set_Paddle_item_inactive(ITEM2);
 			p1.set_Paddle_size(p1.get_Paddle_width() / 1.5, p1.get_Paddle_height());
+			timer_flag[0]=false;
+		}
+		else if(p1_item2_t > 0){
+			print_timer(&timer[0], &font, p1_item2_t, 0, 0);
+			timer_flag[0]=true;			
 		}
 		if(p1_item3_t > delay){
 			p1_item3_timer = false;
 			p1_item3_t = 0;
 			p1.set_Paddle_item_inactive(ITEM3);
 			p2.set_Paddle_speedX(p2.get_Paddle_speedX() * 2);
+			timer_flag[1]=false;
+		}
+		else if(p1_item3_t > 0){
+			print_timer(&timer[1], &font, p1_item3_t, 0, 100);			
+			timer_flag[1]=true;
 		}
 		if(p2_item2_t > delay){
 			p2_item2_timer = false;
 			p2_item2_t = 0;
 			p2.set_Paddle_item_inactive(ITEM2);
 			p2.set_Paddle_size(p2.get_Paddle_width() / 1.5, p2.get_Paddle_height());
+			timer_flag[2]=false;
+		}
+		else if(p2_item2_t > 0){
+			print_timer(&timer[2], &font, p2_item2_t, 0, 200);			
+			timer_flag[2]=true;
 		}
 		if(p2_item3_t > delay){
 			p2_item3_timer = false;
 			p2_item3_t = 0;
 			p2.set_Paddle_item_inactive(ITEM3);
 			p1.set_Paddle_speedX(p1.get_Paddle_speedX() * 2);
+			timer_flag[3]=false;
+		}
+		else if(p2_item3_t > 0){
+			print_timer(&timer[3], &font, p2_item3_t, 0, 300);			
+			timer_flag[3]=true;
+		}
+		object_draw();
+		for(int i=0 ; i<4 ; i++){
+			if(timer_flag[i])
+				window.draw(timer[i]);
 		}
 
-		object_draw();
 		window.display();
 	}
 
@@ -854,4 +884,13 @@ void player2_win(sf::Text* text1, sf::Text* text2, sf::Font* font){
 	text2->setCharacterSize(30);
 	text2->setFillColor(sf::Color::White);
 	text2->setPosition(100.f, 600.f);
+}
+void print_timer(sf::Text* timer, sf::Font* font, float time, float x, float y){
+	int t = 10-time;
+	timer->setString(std::to_string(t));
+	timer->setFont(*font);
+	timer->setCharacterSize(30);
+	timer->setFillColor(sf::Color::White);
+	timer->setPosition(x, y);
+
 }
