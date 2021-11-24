@@ -12,8 +12,12 @@ Paddle::Paddle(){
 	paddle_width = 0;
 	paddle_height = 0;
 	paddle_speedX = 0;
-	num_bomb = 0;
-	active = false;
+	num_item1 = 0;
+	num_item2 = 0;
+	num_item3 = 0;
+	item1_active = false;
+	item2_active = false;
+	item3_active = false;
 };
 
 float Paddle::get_Paddle_width(){
@@ -31,12 +35,6 @@ float Paddle::get_Paddle_y(){
 float Paddle::get_Paddle_speedX(){
 	return paddle_speedX;
 }
-int Paddle::get_Paddle_bomb(){
-	return num_bomb;
-}
-bool Paddle::get_Paddle_active(){
-	return active;
-}
 
 void Paddle::set_Paddle_size(float paddle_width_, float paddle_height_){
 	paddle_width = paddle_width_;
@@ -53,19 +51,44 @@ void Paddle::set_Paddle_speedX(float paddle_speedX_){
 void Paddle::set_Paddle_color(){
 	this->setFillColor(sf::Color(100, 100, 100));
 	this->setOutlineThickness(0);
-	if(active){
+	if(item1_active){
 		this->setOutlineThickness(1.25);
 		this->setOutlineColor(sf::Color::Red);
 	}
 }
-void Paddle::set_Paddle_bomb(int num){
-	num_bomb = num;
+
+int Paddle::get_Paddle_item(int idx){
+	switch(idx){
+	case 1:
+		return num_item1;
+	case 2:
+		return num_item2;
+	case 3:
+		return num_item3;
+	default:
+		break;
+	}
 }
-void Paddle::set_Paddle_active(){
-	active = true;
+bool Paddle::get_Paddle_item_flag(int idx){
+	switch(idx){
+	case 1:
+		return item1_active;
+	case 2:
+		return item2_active;
+	case 3:
+		return item3_active;
+	default:
+		break;
+	}
 }
-void Paddle::set_Paddle_inactive(){
-	active = false;
+void Paddle::set_Paddle_item(int idx, int num){
+	num_item1 = num;
+}
+void Paddle::set_Paddle_item_active(int idx){
+	item1_active = true;
+}
+void Paddle::set_Paddle_item_inactive(int idx){
+	item1_active = false;
 }
 
 void Paddle::Paddle_move(int screen_width, int screen_height){

@@ -19,6 +19,7 @@ private:
 	float ball_radius;
 	float ball_speedX;
 	float ball_speedY;
+	float gap;
 	bool active;
 public:
 	Ball();
@@ -33,6 +34,7 @@ public:
 	void set_Ball_position(float ball_x_, float ball_y_);
 	void set_Ball_speedX(float ball_speedX_);
 	void set_Ball_speedY(float ball_speedX_);
+	void set_gap(float gap_);
 	void set_Ball_color();
 
 	void Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2, std::vector<Brick> &p1_b, std::vector<Brick> &p2_b);

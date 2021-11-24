@@ -17,7 +17,6 @@ private:
 	float brick_height;
 	int brick_hp;
 	int item;
-	bool deleted;
 public:
 	Brick();
 
@@ -27,14 +26,12 @@ public:
 	float get_Brick_y();
 	int get_Brick_hp();
 	int get_Brick_item();
-	bool get_Brick_deleted();
 
 	void set_Brick_size(float brick_width_, float brick_height_);
 	void set_Brick_position(float brick_x_, float brick_y_);
 	void set_Brick_hp(int brick_hp_);
 	void set_Brick_color();
 	void set_Brick_item(int item_);
-	void set_Brick_deleted();
 };
 
 #endif

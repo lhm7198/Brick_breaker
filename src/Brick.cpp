@@ -13,7 +13,6 @@ Brick::Brick(){
 	brick_height = 0;
 	brick_hp = 0;
 	item = 0;
-	deleted = false;
 };
 
 float Brick::get_Brick_width(){
@@ -33,9 +32,6 @@ int Brick::get_Brick_hp(){
 }
 int Brick::get_Brick_item(){
 	return item;
-}
-bool Brick::get_Brick_deleted(){
-	return this->deleted;
 }
 
 void Brick::set_Brick_size(float brick_width_, float brick_height_){
@@ -58,8 +54,4 @@ void Brick::set_Brick_color(){
 }
 void Brick::set_Brick_item(int item_){
 	item = item_;	
-}
-
-void Brick::set_Brick_deleted(){
-	deleted = true;
 }

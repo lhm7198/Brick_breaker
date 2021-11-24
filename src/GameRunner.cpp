@@ -80,6 +80,7 @@ Game::Game(int w, int h){
 	ball1.set_Ball_speedX(BALL_SPEED);
 	ball1.set_Ball_speedY(-BALL_SPEED);
 	ball1.set_Ball_position(w*0.3 - BALL_RADIUS, h*0.5 - BALL_RADIUS);
+	ball1.set_gap(gap);
 	balls.push_back(ball1);
 
 	Ball ball2; // ball2
@@ -87,6 +88,7 @@ Game::Game(int w, int h){
 	ball2.set_Ball_speedX(-BALL_SPEED);
 	ball2.set_Ball_speedY(BALL_SPEED);
 	ball2.set_Ball_position(w*0.7 - BALL_RADIUS, h*0.5 - BALL_RADIUS);
+	ball1.set_gap(gap);
 	balls.push_back(ball2);
 
 	// Window
@@ -157,28 +159,42 @@ void Game::gameRunning(){
 void Game::receiveKeyinputs(){
 	if(event.type == sf::Event::KeyPressed){
 		switch(event.key.code){
+			// player1
 			case sf::Keyboard::A:
 				p1_paddle[0].set_Paddle_speedX(-PADDLE_SPEED);
+				break;
+			case sf::Keyboard::S:
+				p1_paddle[0].set_Paddle_speedX(0);
 				break;
 			case sf::Keyboard::D:
 				p1_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
 				break;
-			case sf::Keyboard::F:
-				if(p1_paddle[0].get_Paddle_bomb() && !p1_paddle[0].get_Paddle_active()){
+			case sf::Keyboard::Q:
+				if(p1_paddle[0].get_Paddle_item1() && !p1_paddle[0].get_Paddle_item1_active()){
+					p1_paddle[0].set_Paddle_item1_active();
+					p1_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
+				}
+				break;
+			case sf::Keyboard::W:
+				if(p1_paddle[0].get_Paddle_grow() && !p1_paddle[0].get_Paddle_active()){
 					p1_paddle[0].set_Paddle_active();
 					p1_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
 				}
 				break;
+			// player2
 			case sf::Keyboard::Left:
 				p2_paddle[0].set_Paddle_speedX(-PADDLE_SPEED);
+				break;
+			case sf::Keyboard::Down:
+				p2_paddle[0].set_Paddle_speedX(0);
 				break;
 			case sf::Keyboard::Right:
 				p2_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
 				break;
-			case sf::Keyboard::PageDown:
-				if(p2_paddle[0].get_Paddle_bomb() && !p2_paddle[0].get_Paddle_active()){
-					p2_paddle[0].set_Paddle_active();
-					p2_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
+			case sf::Keyboard::Delete:
+				if(p2_paddle[0].get_Paddle_item1() && !p2_paddle[0].get_Paddle_item1_active()){
+					p2_paddle[0].set_Paddle_item1_active();
+					p2_paddle[0].set_Paddle_bomb(p2_paddle[0].get_Paddle_bomb() - 1);
 				}
 				break;
 			case sf::Keyboard::Return:
@@ -203,12 +219,12 @@ void Game::object_draw(){
 	window.draw(p2_control);
 
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player1 bricks
-		if(p1_bricks[i].get_Brick_deleted() == true) continue;
+		if(p1_bricks[i].get_Brick_hp() == 0) continue;
 		p1_bricks[i].set_Brick_color();		
 		window.draw(p1_bricks[i]);
 	}
 	for(int i=0; i<BRICKS_PER_ROW*BRICKS_PER_COL; i++){ // player2 bricks
-		if(p2_bricks[i].get_Brick_deleted() == true) continue;
+		if(p2_bricks[i].get_Brick_hp() == 0) continue;
 		p2_bricks[i].set_Brick_color();		
 		window.draw(p2_bricks[i]);
 	}
