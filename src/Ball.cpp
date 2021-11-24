@@ -80,9 +80,9 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 	if(ball_speedY < 0){ // when ball moves down to top
 		if(get_Ball_y() - ball_radius >= p1.get_Paddle_y() + p1.get_Paddle_height() && get_Ball_y() - ball_radius < p1.get_Paddle_y() + p1.get_Paddle_height() - ball_speedY){
 			if(get_Ball_x() > p1.get_Paddle_x() && get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
-				if(p1.get_Paddle_active() && !active){ // p1 was active
+				if(p1.get_Paddle_item_work(ITEM1) && !active){ // p1 was active
 					active = true;
-					p1.set_Paddle_inactive();
+					p1.set_Paddle_item_inactive(ITEM1);
 				}
 
 				if(ball_speedX * p2.get_Paddle_speedX() > 0){ // accelerate
@@ -103,9 +103,9 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		}
 		if(get_Ball_y() - ball_radius >= p2.get_Paddle_y() + p2.get_Paddle_height() && get_Ball_y() - ball_radius < p2.get_Paddle_y() + p2.get_Paddle_height() - ball_speedY){ 
 			if(get_Ball_x() > p2.get_Paddle_x() && get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
-				if(p2.get_Paddle_active() && !active){ // p2 was active
+				if(p2.get_Paddle_item_work(ITEM1) && !active){ // p2 was active
 					active = true;
-					p2.set_Paddle_inactive();
+					p2.set_Paddle_item_inactive(ITEM1);
 				}				
 
 				if(ball_speedX * p2.get_Paddle_speedX() > 0){ // accelerate
@@ -129,9 +129,9 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 	else{ // when ball moves top to down
 		if(get_Ball_y() + ball_radius <= p1.get_Paddle_y() && get_Ball_y() + ball_radius > p1.get_Paddle_y() - ball_speedY){
 			if(get_Ball_x() > p1.get_Paddle_x() && get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
-				if(p1.get_Paddle_active() && !active){ // p1 was active
+				if(p1.get_Paddle_item_work(ITEM1) && !active){ // p1 was active
 					active = true;
-					p1.set_Paddle_inactive();
+					p1.set_Paddle_item_inactive(ITEM1);
 				}
 
 				if(ball_speedX * p1.get_Paddle_speedX() > 0){ // accelerate
@@ -152,9 +152,9 @@ void Ball::Ball_move(int screen_width, int screen_height, Paddle &p1, Paddle &p2
 		}
 		if(get_Ball_y() + ball_radius <= p2.get_Paddle_y() && get_Ball_y() + ball_radius > p2.get_Paddle_y() - ball_speedY){
 			if(get_Ball_x() > p2.get_Paddle_x() && get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
-				if(p2.get_Paddle_active() && !active){ // p2 was active
+				if(p2.get_Paddle_item_work(ITEM1) && !active){ // p2 was active
 					active = true;
-					p2.set_Paddle_inactive();
+					p2.set_Paddle_item_inactive(ITEM1);
 				}
 
 				if(ball_speedX * p2.get_Paddle_speedX() > 0){ // accelerate
@@ -338,9 +338,10 @@ void Ball::p1_get_item(Brick &brick, Paddle &paddle){
 		case 1: 
 			break;
 		case 2:
+			paddle.set_Paddle_item(ITEM2, 1);
 			break;
 		case 3:
-			paddle.set_Paddle_bomb(3);
+			paddle.set_Paddle_item(ITEM1, 3);
 			break;
 		default:
 			break;		
@@ -355,9 +356,10 @@ void Ball::p2_get_item(Brick &brick, Paddle &paddle){
 		case 1: 
 			break;
 		case 2:
+			paddle.set_Paddle_item(ITEM2, 1);
 			break;
 		case 3:
-			paddle.set_Paddle_bomb(3);
+			paddle.set_Paddle_item(ITEM1, 3);
 			break;
 		default:
 			break;		

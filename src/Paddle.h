@@ -8,6 +8,9 @@
 
 #ifndef PADDLE_H
 #define PADDLE_H
+#define ITEM1 1
+#define ITEM2 2
+#define ITEM3 3
 
 #include <SFML/Graphics.hpp>
 
@@ -37,7 +40,7 @@ public:
 	void set_Paddle_color();
 
 	int get_Paddle_item(int idx);
-	bool get_Paddle_item_flag(int idx);
+	bool get_Paddle_item_work(int idx);
 	void set_Paddle_item(int idx, int num);
 	void set_Paddle_item_active(int idx);
 	void set_Paddle_item_inactive(int idx);

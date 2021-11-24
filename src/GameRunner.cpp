@@ -150,7 +150,7 @@ void Game::gameRunning(){
 			object_draw();
 		}
 		//printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
-		printf("%d %d\n", p1_paddle[0].get_Paddle_bomb(), p2_paddle[0].get_Paddle_bomb());
+		//printf("%d %d\n", p1_paddle[0].get_Paddle_bomb(), p2_paddle[0].get_Paddle_bomb());
 		object_draw();
 		window.display();
 	}
@@ -170,15 +170,16 @@ void Game::receiveKeyinputs(){
 				p1_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Q:
-				if(p1_paddle[0].get_Paddle_item1() && !p1_paddle[0].get_Paddle_item1_active()){
-					p1_paddle[0].set_Paddle_item1_active();
-					p1_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
+				if(p1_paddle[0].get_Paddle_item(ITEM1) && !p1_paddle[0].get_Paddle_item_work(ITEM1)){
+					p1_paddle[0].set_Paddle_item_active(ITEM1);
+					p1_paddle[0].set_Paddle_item(ITEM1, p1_paddle[0].get_Paddle_item(ITEM1) - 1);
 				}
 				break;
 			case sf::Keyboard::W:
-				if(p1_paddle[0].get_Paddle_grow() && !p1_paddle[0].get_Paddle_active()){
-					p1_paddle[0].set_Paddle_active();
-					p1_paddle[0].set_Paddle_bomb(p1_paddle[0].get_Paddle_bomb() - 1);
+				if(p1_paddle[0].get_Paddle_item(ITEM2) && !p1_paddle[0].get_Paddle_item_work(ITEM2)){
+					p1_paddle[0].set_Paddle_item_active(ITEM2);
+					p1_paddle[0].set_Paddle_item(ITEM2, p1_paddle[0].get_Paddle_item(ITEM2) - 1);
+					p1_paddle[0].set_Paddle_size(p1_paddle[0].get_Paddle_width() * 2, p1_paddle[0].get_Paddle_height());
 				}
 				break;
 			// player2
@@ -192,9 +193,16 @@ void Game::receiveKeyinputs(){
 				p2_paddle[0].set_Paddle_speedX(PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Delete:
-				if(p2_paddle[0].get_Paddle_item1() && !p2_paddle[0].get_Paddle_item1_active()){
-					p2_paddle[0].set_Paddle_item1_active();
-					p2_paddle[0].set_Paddle_bomb(p2_paddle[0].get_Paddle_bomb() - 1);
+				if(p2_paddle[0].get_Paddle_item(ITEM1) && !p2_paddle[0].get_Paddle_item_work(ITEM1)){
+					p2_paddle[0].set_Paddle_item_active(ITEM1);
+					p2_paddle[0].set_Paddle_item(ITEM1, p2_paddle[0].get_Paddle_item(ITEM1) - 1);
+				}
+				break;
+			case sf::Keyboard::End:
+				if(p2_paddle[0].get_Paddle_item(ITEM2) && !p2_paddle[0].get_Paddle_item_work(ITEM2)){
+					p2_paddle[0].set_Paddle_item_active(ITEM2);
+					p2_paddle[0].set_Paddle_item(ITEM2, p2_paddle[0].get_Paddle_item(ITEM2) - 1);
+					p2_paddle[0].set_Paddle_size(p2_paddle[0].get_Paddle_width() * 2, p2_paddle[0].get_Paddle_height());
 				}
 				break;
 			case sf::Keyboard::Return:
@@ -230,6 +238,7 @@ void Game::object_draw(){
 	}
 	for(int i=0; i<p1_paddle.size(); i++){ // player1 paddle
 		p1_paddle[i].set_Paddle_color();
+		
 		window.draw(p1_paddle[i]);
 	}
 	for(int i=0; i<p2_paddle.size(); i++){ // player2 paddle
