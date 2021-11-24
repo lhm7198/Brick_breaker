@@ -18,6 +18,8 @@
 #include "Brick.h"
 #include "Ball.h"
 #include "Paddle.h"
+#define PLAYER1 1
+#define PLAYER2 2
 
 class Game{
 private:
@@ -33,7 +35,7 @@ private:
 	int screen_height;
 	bool is_start_page;
 	bool is_game_start;
-	bool is_game_end;
+	int is_game_end;
 
 	// Bricks
 	float gap;

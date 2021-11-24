@@ -10,6 +10,8 @@
 
 void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start, sf::Font* font1, sf::Font* font2);
 void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::Font* font);
+void player1_win(sf::Text* text1, sf::Text* text2, sf::Font* font);
+void player2_win(sf::Text* text1, sf::Text* text2, sf::Font* font);
 float fast(float speed);
 float slow(float speed);
 
@@ -19,7 +21,7 @@ Game::Game(int w, int h){
 	screen_height = h;
 	is_start_page = true;
 	is_game_start = false;
-	is_game_end = false;
+	is_game_end = 0;
 
 	// items
 	srand(time(NULL));
@@ -89,7 +91,7 @@ Game::Game(int w, int h){
 	p2.set_Paddle_item(ITEM3, 10);
 	p1.set_Paddle_item(ITEM1, 10);
 	p2.set_Paddle_item(ITEM1, 10);
-	
+
 	if(!bufferPaddle.loadFromFile("sound/collision.wav"))
 		printf("cannot play");
 	soundPaddle.setBuffer(bufferPaddle);
@@ -167,7 +169,7 @@ void Game::gameRunning(){
 	float p1_item2_t = 0, p1_item3_t = 0;
 	float p2_item2_t = 0, p2_item3_t = 0;
 	float delay = 10;
-	while(window.isOpen()){
+	while(window.isOpen() && !is_game_end){
 		if(p1_item2_timer) p1_item2_t += clock.getElapsedTime().asSeconds();
 		if(p1_item3_timer) p1_item3_t += clock.getElapsedTime().asSeconds();
 		if(p2_item2_timer) p2_item2_t += clock.getElapsedTime().asSeconds();
@@ -218,11 +220,29 @@ void Game::gameRunning(){
 			p2.set_Paddle_item_inactive(ITEM3);
 			p1.set_Paddle_speedX(p1.get_Paddle_speedX() * 2);
 		}
-		//printf("%f %f %f %f\n", p1.get_Paddle_speedX(), p2.get_Paddle_speedX(), p1_item3_t, p2_item3_t);
-		//printf("%d %d\n", p1.get_Paddle_item(ITEM1), p2.get_Paddle_item(ITEM1));
-		//printf("%f %f\n", balls[0].get_Ball_speedX(), balls[0].get_Ball_speedY());
-		//printf("%f\n", p1_item2_t);
+
 		object_draw();
+		window.display();
+	}
+
+	while(window.isOpen() && is_game_end){
+		while(window.pollEvent(event)){
+			if(event.type == sf::Event::Closed){
+				window.close();
+			}
+		}
+
+		sf::Font font;
+		font.loadFromFile("NanumGothic.ttf");
+		sf::Text text1, text2;
+
+		window.clear(sf::Color::Black);
+
+		if(is_game_end == 1) player1_win(&text1, &text2, &font);
+		else if(is_game_end == 2) player2_win(&text1, &text2, &font);
+
+		window.draw(text1);
+		window.draw(text2);
 		window.display();
 	}
 }
@@ -264,7 +284,7 @@ void Game::receiveKeyinputs(){
 					p1_item3_timer = true;
 				}
 				break;
-			// player2
+				// player2
 			case sf::Keyboard::Left:
 				if(p2.get_Paddle_speedX() != 0) p2.set_Paddle_speedX(-abs(p2.get_Paddle_speedX()));
 				else p2.set_Paddle_speedX(-PADDLE_SPEED);
@@ -309,10 +329,12 @@ void Game::receiveKeyinputs(){
 
 void Game::object_draw(){
 	window.clear(sf::Color::Black);
+
 	sf::Font font;
 	font.loadFromFile("NanumGothic.ttf");
 	sf::Text text, p1_control, p2_control;
 	startgame(&text, &p1_control, &p2_control, &font);
+
 	if(!is_game_start){
 		window.draw(text);
 	}
@@ -353,13 +375,13 @@ void Game::ball_wall_collision(){
 		}
 		if(balls[i].get_Ball_y() - balls[i].get_Ball_radius() < 0){ // topside collision
 			balls[i].set_Ball_speedY(-balls[i].get_Ball_speedY());
-			balls[i].set_Ball_speedX(0);
-			balls[i].set_Ball_speedY(0);
+			is_game_start = false;
+			is_game_end = PLAYER2;
 		}
 		else if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() * 2 >= screen_height){ // downside collision
 			balls[i].set_Ball_speedY(-balls[i].get_Ball_speedY());
-			balls[i].set_Ball_speedX(0);
-			balls[i].set_Ball_speedY(0);
+			is_game_start = false;
+			is_game_end = PLAYER1;
 		}
 	}
 }
@@ -368,7 +390,7 @@ void Game::ball_paddle_collision(){
 	for(int i=0; i<balls.size(); i++){
 		if(balls[i].get_Ball_speedY() < 0){ // when ball moves down to top
 			if(balls[i].get_Ball_y() - balls[i].get_Ball_radius() >= p1.get_Paddle_y() + p1.get_Paddle_height() 
-			&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p1.get_Paddle_y() + p1.get_Paddle_height() - balls[i].get_Ball_speedY()){
+					&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p1.get_Paddle_y() + p1.get_Paddle_height() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p1.get_Paddle_x() && balls[i].get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
 					soundPaddle.play();
 					if(p1.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
@@ -389,7 +411,7 @@ void Game::ball_paddle_collision(){
 				}
 			}
 			if(balls[i].get_Ball_y() - balls[i].get_Ball_radius() >= p2.get_Paddle_y() + p2.get_Paddle_height() 
-			&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p2.get_Paddle_y() + p2.get_Paddle_height() - balls[i].get_Ball_speedY()){ 
+					&& balls[i].get_Ball_y() - balls[i].get_Ball_radius() < p2.get_Paddle_y() + p2.get_Paddle_height() - balls[i].get_Ball_speedY()){ 
 				if(balls[i].get_Ball_x() > p2.get_Paddle_x() && balls[i].get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
 					soundPaddle.play();
 					if(p2.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
@@ -413,7 +435,7 @@ void Game::ball_paddle_collision(){
 		}
 		else{ // when ball moves top to down
 			if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() <= p1.get_Paddle_y() 
-			&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p1.get_Paddle_y() - balls[i].get_Ball_speedY()){
+					&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p1.get_Paddle_y() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p1.get_Paddle_x() && balls[i].get_Ball_x() < p1.get_Paddle_x() + p1.get_Paddle_width()){ // collide with p1_paddle
 					soundPaddle.play();
 					if(p1.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
@@ -434,7 +456,7 @@ void Game::ball_paddle_collision(){
 				}
 			}
 			if(balls[i].get_Ball_y() + balls[i].get_Ball_radius() <= p2.get_Paddle_y() 
-			&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p2.get_Paddle_y() - balls[i].get_Ball_speedY()){
+					&& balls[i].get_Ball_y() + balls[i].get_Ball_radius() > p2.get_Paddle_y() - balls[i].get_Ball_speedY()){
 				if(balls[i].get_Ball_x() > p2.get_Paddle_x() && balls[i].get_Ball_x() < p2.get_Paddle_x() + p2.get_Paddle_width()){ // collide with p2_paddle
 					soundPaddle.play();
 					if(p2.get_Paddle_item_work(ITEM1) && !balls[i].get_Ball_active()){ // p1 was active && balls[i] was inactive
@@ -469,7 +491,7 @@ void Game::ball_brick_collision(Ball &ball){
 
 				if(ball.get_Ball_x() >= p1_b[i].get_Brick_x() - gap*0.5 && ball.get_Ball_x() < p1_b[i].get_Brick_x() + p1_b[i].get_Brick_width() + gap*0.5){
 					ball.set_Ball_speedY(-ball.get_Ball_speedY());
-					
+
 					collide_flag = true;
 				}
 			}
@@ -512,7 +534,7 @@ void Game::ball_brick_collision(Ball &ball){
 
 			p1_b[i].set_Brick_hp(p1_b[i].get_Brick_hp() - 1); // self
 			if(p1_b[i].get_Brick_hp() == 0) p2_get_item(p1_b[i]);
-			
+
 			continue;
 		}
 
@@ -524,7 +546,7 @@ void Game::ball_brick_collision(Ball &ball){
 					ball.set_Ball_speedX(-ball.get_Ball_speedX());
 
 					collide_flag = true;
-					
+
 					soundBricks.play();
 				}
 			}
@@ -537,7 +559,7 @@ void Game::ball_brick_collision(Ball &ball){
 					ball.set_Ball_speedX(-ball.get_Ball_speedX());
 
 					collide_flag = true;
-					
+
 					soundBricks.play();
 				}
 			}
@@ -787,7 +809,6 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 	prod->setPosition(170.f,775.f);
 }
 void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::Font* font){
-
 	text->setString("Press Enter to start");
 	p1_control->setString("A      D");
 	p2_control->setString("<-     ->");
@@ -807,4 +828,30 @@ void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::F
 	text->setPosition(100.f, 450.f);
 	p1_control->setPosition(160.f, 85.f);
 	p2_control->setPosition(160.f, 650.f);
+}
+void player1_win(sf::Text* text1, sf::Text* text2, sf::Font* font){
+	text1->setString("Congratulations!");
+	text1->setFont(*font);
+	text1->setCharacterSize(30);
+	text1->setFillColor(sf::Color::Yellow);
+	text1->setPosition(100.f, 450.f);
+
+	text2->setString("PLAYER1 WINS");
+	text2->setFont(*font);
+	text2->setCharacterSize(30);
+	text2->setFillColor(sf::Color::White);
+	text2->setPosition(100.f, 600.f);
+}
+void player2_win(sf::Text* text1, sf::Text* text2, sf::Font* font){
+	text1->setString("Congratulations!");
+	text1->setFont(*font);
+	text1->setCharacterSize(30);
+	text1->setFillColor(sf::Color::Yellow);
+	text1->setPosition(100.f, 450.f);
+
+	text2->setString("PLAYER2 WINS");
+	text2->setFont(*font);
+	text2->setCharacterSize(30);
+	text2->setFillColor(sf::Color::White);
+	text2->setPosition(100.f, 600.f);
 }
