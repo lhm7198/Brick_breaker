@@ -38,6 +38,7 @@ Game::Game(int w, int h){
 	soundBomb.setLoop(false);
 	soundBomb.setVolume(50.0);
 
+	// item_slot
 	p1_item.loadFromFile("image/P1_item.png");
 	p1_item.setSmooth(true);
 	p1_item_slot.setTexture(p1_item);
@@ -51,32 +52,89 @@ Game::Game(int w, int h){
 	p2_item_slot.scale(0.5f,0.5f);
 	p2_item_slot.setPosition(424.f,450.f);
 
-	bomb1.loadFromFile("./image/1bomb.jpg");
-	bomb1.setSmooth(true);
-	p1_s_1bomb.setTexture(bomb1);
-	p1_s_1bomb.setScale(0.21f, 0.17f);
-	p1_s_1bomb.setPosition(2.1f, 138.f);
-	p2_s_1bomb.setTexture(bomb1);
-	p2_s_1bomb.setScale(0.21f, 0.17f);
-	p2_s_1bomb.setPosition(427.f,468.f);
+	// item1
+	item1_1.loadFromFile("./image/item1_1.jpg");
+	item1_1.setSmooth(true);
+	p1_s_item1_1.setTexture(item1_1);
+	p1_s_item1_1.setScale(0.21f, 0.17f);
+	p1_s_item1_1.setPosition(2.1f, 138.f);
+	p2_s_item1_1.setTexture(item1_1);
+	p2_s_item1_1.setScale(0.21f, 0.17f);
+	p2_s_item1_1.setPosition(427.f, 468.f);
 
-	bomb2.loadFromFile("./image/2bomb.jpg");
-	bomb2.setSmooth(true);
-	p1_s_2bomb.setTexture(bomb2);
-	p1_s_2bomb.setScale(0.16f, 0.14f);
-	p1_s_2bomb.setPosition(2.1f, 138.f);
-	p2_s_2bomb.setTexture(bomb2);
-	p2_s_2bomb.setScale(0.16f, 0.14f);
-	p2_s_2bomb.setPosition(427.f, 468.f);
+	item1_2.loadFromFile("./image/item1_2.jpg");
+	item1_2.setSmooth(true);
+	p1_s_item1_2.setTexture(item1_2);
+	p1_s_item1_2.setScale(0.16f, 0.14f);
+	p1_s_item1_2.setPosition(2.1f, 138.f);
+	p2_s_item1_2.setTexture(item1_2);
+	p2_s_item1_2.setScale(0.16f, 0.14f);
+	p2_s_item1_2.setPosition(427.f, 468.f);
 
-	bomb3.loadFromFile("./image/3bomb.jpg");
-	bomb3.setSmooth(true);
-	p1_s_3bomb.setTexture(bomb3);
-	p1_s_3bomb.setScale(0.14f, 0.13f);
-	p1_s_3bomb.setPosition(2.1f, 138.f);
-	p2_s_3bomb.setTexture(bomb3);
-	p2_s_3bomb.setScale(0.14f, 0.13f);
-	p2_s_3bomb.setPosition(427.f,468.f);
+	item1_3.loadFromFile("./image/item1_3.jpg");
+	item1_3.setSmooth(true);
+	p1_s_item1_3.setTexture(item1_3);
+	p1_s_item1_3.setScale(0.14f, 0.13f);
+	p1_s_item1_3.setPosition(2.1f, 138.f);
+	p2_s_item1_3.setTexture(item1_3);
+	p2_s_item1_3.setScale(0.14f, 0.13f);
+	p2_s_item1_3.setPosition(427.f, 468.f);
+
+	// item2
+	item2_1.loadFromFile("./image/item2_1.jpg");
+	item2_1.setSmooth(true);
+	p1_s_item2_1.setTexture(item2_1);
+	p1_s_item2_1.setScale(0.25f, 0.3f);
+	p1_s_item2_1.setPosition(2.1f, 205.f);
+	p2_s_item2_1.setTexture(item2_1);
+	p2_s_item2_1.setScale(0.25f, 0.3f);
+	p2_s_item2_1.setPosition(427.f, 535.f);
+
+	item2_2.loadFromFile("./image/item2_2.jpg");
+	item2_2.setSmooth(true);
+	p1_s_item2_2.setTexture(item2_2);
+	p1_s_item2_2.setScale(0.28f, 0.38f);
+	p1_s_item2_2.setPosition(2.1f, 205.f);
+	p2_s_item2_2.setTexture(item2_2);
+	p2_s_item2_2.setScale(0.28f, 0.38f);
+	p2_s_item2_2.setPosition(427.f, 535.f);
+
+	item2_3.loadFromFile("./image/item2_3.jpg");
+	item2_3.setSmooth(true);
+	p1_s_item2_3.setTexture(item2_3);
+	p1_s_item2_3.setScale(0.28f, 0.38f);
+	p1_s_item2_3.setPosition(2.1f, 205.f);
+	p2_s_item2_3.setTexture(item2_3);
+	p2_s_item2_3.setScale(0.28f, 0.38f);
+	p2_s_item2_3.setPosition(427.f, 535.f);
+
+	// item3
+	item3_1.loadFromFile("./image/item3_1.jpg");
+	item3_1.setSmooth(true);
+	p1_s_item3_1.setTexture(item3_1);
+	p1_s_item3_1.setScale(0.16f, 0.16f);
+	p1_s_item3_1.setPosition(2.1f, 275.f);
+	p2_s_item3_1.setTexture(item3_1);
+	p2_s_item3_1.setScale(0.16f, 0.16f);
+	p2_s_item3_1.setPosition(427.f, 605.f);
+
+	item3_2.loadFromFile("./image/item3_2.jpg");
+	item3_2.setSmooth(true);
+	p1_s_item3_2.setTexture(item3_2);
+	p1_s_item3_2.setScale(0.3f, 0.35f);
+	p1_s_item3_2.setPosition(2.1f, 275.f);
+	p2_s_item3_2.setTexture(item3_2);
+	p2_s_item3_2.setScale(0.3f, 0.35f);
+	p2_s_item3_2.setPosition(427.f, 605.f);
+
+	item3_3.loadFromFile("./image/item3_3.jpg");
+	item3_3.setSmooth(true);
+	p1_s_item3_3.setTexture(item3_3);
+	p1_s_item3_3.setScale(0.33f, 0.28f);
+	p1_s_item3_3.setPosition(2.1f, 275.f);
+	p2_s_item3_3.setTexture(item3_3);
+	p2_s_item3_3.setScale(0.33f, 0.28f);
+	p2_s_item3_3.setPosition(427.f, 605.f);
 	
 	// Bricks
 	float brick_width = w / (BRICKS_PER_ROW * 1.1);
@@ -132,8 +190,6 @@ Game::Game(int w, int h){
 	p2.set_Paddle_item(ITEM3, 10);
 	p1.set_Paddle_item(ITEM1, 10);
 	p2.set_Paddle_item(ITEM1, 10);*/
-	p1.set_Paddle_item(ITEM1, 3);
-	p2.set_Paddle_item(ITEM1, 3);
 
 	if(!bufferPaddle.loadFromFile("./sound/collision.wav"))
 		printf("cannot play");
@@ -324,7 +380,7 @@ void Game::receiveKeyinputs(){
 		switch(event.key.code){
 			// player1
 			case sf::Keyboard::A:
-				if(p1.get_Paddle_speedX() != 0) p1.set_Paddle_speedX(-abs(p1.get_Paddle_speedX()));
+				if(p2.get_Paddle_item_work(ITEM3)) p1.set_Paddle_speedX(-abs(p1.get_Paddle_speedX()));
 				else p1.set_Paddle_speedX(-PADDLE_SPEED);
 				break;
 			case sf::Keyboard::S:
@@ -352,13 +408,13 @@ void Game::receiveKeyinputs(){
 				if(p1.get_Paddle_item(ITEM3) && !p1.get_Paddle_item_work(ITEM3)){
 					p1.set_Paddle_item_active(ITEM3);
 					p1.set_Paddle_item(ITEM3, p1.get_Paddle_item(ITEM3) - 1);
-					p2.set_Paddle_speedX(p2.get_Paddle_speedX() * 0.5);
+					p2.set_Paddle_speedX(p2.get_Paddle_speedX() / 2);
 					p1_item3_timer = true;
 				}
 				break;
 				// player2
 			case sf::Keyboard::Left:
-				if(p2.get_Paddle_speedX() != 0) p2.set_Paddle_speedX(-abs(p2.get_Paddle_speedX()));
+				if(p1.get_Paddle_item_work(ITEM3)) p2.set_Paddle_speedX(-abs(p2.get_Paddle_speedX()));
 				else p2.set_Paddle_speedX(-PADDLE_SPEED);
 				break;
 			case sf::Keyboard::Down:
@@ -386,7 +442,7 @@ void Game::receiveKeyinputs(){
 				if(p2.get_Paddle_item(ITEM3) && !p2.get_Paddle_item_work(ITEM3)){
 					p2.set_Paddle_item_active(ITEM3);
 					p2.set_Paddle_item(ITEM3, p2.get_Paddle_item(ITEM3) - 1);
-					p1.set_Paddle_speedX(p1.get_Paddle_speedX() * 0.5);
+					p1.set_Paddle_speedX(p1.get_Paddle_speedX() / 2);
 					p2_item3_timer = true;
 				}
 				break;
@@ -403,19 +459,44 @@ void Game::object_draw(){
 	window.clear(sf::Color::Black);
 	window.draw(p1_item_slot);
 	window.draw(p2_item_slot);
-	//window.draw(p1_s_3bomb);
-	int item_num = p1.get_Paddle_item(ITEM1);
-	printf("item_num : %d\n", item_num);
-	switch(item_num){
-		case 1: window.draw(p1_s_1bomb); break;
-		case 2: window.draw(p1_s_2bomb); break;
-		case 3: window.draw(p1_s_3bomb); break;
+
+	// item1
+	switch(p1.get_Paddle_item(ITEM1)){
+		case 1: window.draw(p1_s_item1_1); break;
+		case 2: window.draw(p1_s_item1_2); break;
+		case 3: window.draw(p1_s_item1_3); break;
 		default: break;
 	}
 	switch(p2.get_Paddle_item(ITEM1)){
-		case 1: window.draw(p2_s_1bomb); break;
-		case 2: window.draw(p2_s_2bomb); break;
-		case 3: window.draw(p2_s_3bomb); break;
+		case 1: window.draw(p2_s_item1_1); break;
+		case 2: window.draw(p2_s_item1_2); break;
+		case 3: window.draw(p2_s_item1_3); break;
+		default: break;
+	}
+	// item2
+	switch(p1.get_Paddle_item(ITEM2)){
+		case 1: window.draw(p1_s_item2_1); break;
+		case 2: window.draw(p1_s_item2_2); break;
+		case 3: window.draw(p1_s_item2_3); break;
+		default: break;
+	}
+	switch(p2.get_Paddle_item(ITEM2)){
+		case 1: window.draw(p2_s_item2_1); break;
+		case 2: window.draw(p2_s_item2_2); break;
+		case 3: window.draw(p2_s_item2_3); break;
+		default: break;
+	}
+	// item3
+	switch(p1.get_Paddle_item(ITEM3)){
+		case 1: window.draw(p1_s_item3_1); break;
+		case 2: window.draw(p1_s_item3_2); break;
+		case 3: window.draw(p1_s_item3_3); break;
+		default: break;
+	}
+	switch(p2.get_Paddle_item(ITEM3)){
+		case 1: window.draw(p2_s_item3_1); break;
+		case 2: window.draw(p2_s_item3_2); break;
+		case 3: window.draw(p2_s_item3_3); break;
 		default: break;
 	}
 

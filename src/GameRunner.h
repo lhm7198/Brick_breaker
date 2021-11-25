@@ -55,22 +55,47 @@ private:
 	sf::SoundBuffer bufferPaddle;
 	sf::Sound soundPaddle;
 
-	// Bomb(item)
-	sf::SoundBuffer bufferBomb;
-	sf::Sound soundBomb;
+	// item slot
 	sf::Texture p1_item;
 	sf::Texture p2_item;
-	sf::Texture bomb1;
-	sf::Texture bomb2;
-	sf::Texture bomb3;
 	sf::Sprite p1_item_slot;
 	sf::Sprite p2_item_slot;
-	sf::Sprite p1_s_1bomb;
-	sf::Sprite p1_s_2bomb;
-	sf::Sprite p1_s_3bomb;
-	sf::Sprite p2_s_1bomb;
-	sf::Sprite p2_s_2bomb;
-	sf::Sprite p2_s_3bomb;
+
+	// item1
+	sf::SoundBuffer bufferBomb;
+	sf::Sound soundBomb;
+	
+	sf::Texture item1_1;
+	sf::Texture item1_2;
+	sf::Texture item1_3;
+	sf::Sprite p1_s_item1_1;
+	sf::Sprite p1_s_item1_2;
+	sf::Sprite p1_s_item1_3;
+	sf::Sprite p2_s_item1_1;
+	sf::Sprite p2_s_item1_2;
+	sf::Sprite p2_s_item1_3;
+
+	// item2
+	sf::Texture item2_1;
+	sf::Texture item2_2;
+	sf::Texture item2_3;
+	sf::Sprite p1_s_item2_1;
+	sf::Sprite p1_s_item2_2;
+	sf::Sprite p1_s_item2_3;
+	sf::Sprite p2_s_item2_1;
+	sf::Sprite p2_s_item2_2;
+	sf::Sprite p2_s_item2_3;
+
+	// item3
+	sf::Texture item3_1;
+	sf::Texture item3_2;
+	sf::Texture item3_3;
+	sf::Sprite p1_s_item3_1;
+	sf::Sprite p1_s_item3_2;
+	sf::Sprite p1_s_item3_3;
+	sf::Sprite p2_s_item3_1;
+	sf::Sprite p2_s_item3_2;
+	sf::Sprite p2_s_item3_3;
 
 	// Ball
 	std::vector<Ball> balls;
