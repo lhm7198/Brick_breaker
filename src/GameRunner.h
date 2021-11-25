@@ -60,10 +60,17 @@ private:
 	sf::Sound soundBomb;
 	sf::Texture p1_item;
 	sf::Texture p2_item;
-	sf::Texture bomb;
-	sf::Sprite sprite1;
-	sf::Sprite sprite2;
-	sf::Sprite s_bomb;
+	sf::Texture bomb1;
+	sf::Texture bomb2;
+	sf::Texture bomb3;
+	sf::Sprite p1_item_slot;
+	sf::Sprite p2_item_slot;
+	sf::Sprite p1_s_1bomb;
+	sf::Sprite p1_s_2bomb;
+	sf::Sprite p1_s_3bomb;
+	sf::Sprite p2_s_1bomb;
+	sf::Sprite p2_s_2bomb;
+	sf::Sprite p2_s_3bomb;
 
 	// Ball
 	std::vector<Ball> balls;

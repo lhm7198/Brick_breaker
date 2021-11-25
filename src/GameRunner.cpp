@@ -40,22 +40,43 @@ Game::Game(int w, int h){
 
 	p1_item.loadFromFile("image/P1_item.png");
 	p1_item.setSmooth(true);
-	sprite1.setTexture(p1_item);
-	sprite1.scale(0.5f,0.5f);
-	sprite1.setPosition(0.f,120.f);
+	p1_item_slot.setTexture(p1_item);
+	p1_item_slot.scale(0.5f,0.5f);
+	p1_item_slot.setPosition(0.f,120.f);
 
 
 	p2_item.loadFromFile("image/P2_item.png");
 	p2_item.setSmooth(true);
-	sprite2.setTexture(p2_item);
-	sprite2.scale(0.5f,0.5f);
-	sprite2.setPosition(424.f,450.f);
+	p2_item_slot.setTexture(p2_item);
+	p2_item_slot.scale(0.5f,0.5f);
+	p2_item_slot.setPosition(424.f,450.f);
 
-	bomb.loadFromFile("image/3bombs.jpg");
-	bomb.setSmooth(true);
-	s_bomb.setTexture(bomb);
-	s_bomb.scale(0.15f,0.15f);
-	s_bomb.setPosition(0.f,135.f);
+	bomb1.loadFromFile("./image/1bomb.jpg");
+	bomb1.setSmooth(true);
+	p1_s_1bomb.setTexture(bomb1);
+	p1_s_1bomb.setScale(0.21f, 0.17f);
+	p1_s_1bomb.setPosition(2.1f, 138.f);
+	p2_s_1bomb.setTexture(bomb1);
+	p2_s_1bomb.setScale(0.21f, 0.17f);
+	p2_s_1bomb.setPosition(427.f,468.f);
+
+	bomb2.loadFromFile("./image/2bomb.jpg");
+	bomb2.setSmooth(true);
+	p1_s_2bomb.setTexture(bomb2);
+	p1_s_2bomb.setScale(0.16f, 0.14f);
+	p1_s_2bomb.setPosition(2.1f, 138.f);
+	p2_s_2bomb.setTexture(bomb2);
+	p2_s_2bomb.setScale(0.16f, 0.14f);
+	p2_s_2bomb.setPosition(427.f, 468.f);
+
+	bomb3.loadFromFile("./image/3bomb.jpg");
+	bomb3.setSmooth(true);
+	p1_s_3bomb.setTexture(bomb3);
+	p1_s_3bomb.setScale(0.14f, 0.13f);
+	p1_s_3bomb.setPosition(2.1f, 138.f);
+	p2_s_3bomb.setTexture(bomb3);
+	p2_s_3bomb.setScale(0.14f, 0.13f);
+	p2_s_3bomb.setPosition(427.f,468.f);
 	
 	// Bricks
 	float brick_width = w / (BRICKS_PER_ROW * 1.1);
@@ -107,10 +128,12 @@ Game::Game(int w, int h){
 	p2.set_Paddle_speedX(0);
 	p2.set_Paddle_color();
 
-	p1.set_Paddle_item(ITEM3, 10);
+	/*p1.set_Paddle_item(ITEM3, 10);
 	p2.set_Paddle_item(ITEM3, 10);
 	p1.set_Paddle_item(ITEM1, 10);
-	p2.set_Paddle_item(ITEM1, 10);
+	p2.set_Paddle_item(ITEM1, 10);*/
+	p1.set_Paddle_item(ITEM1, 3);
+	p2.set_Paddle_item(ITEM1, 3);
 
 	if(!bufferPaddle.loadFromFile("./sound/collision.wav"))
 		printf("cannot play");
@@ -139,8 +162,8 @@ Game::Game(int w, int h){
 	window.setFramerateLimit(60);
 
 	//bgm
-	if(!bgm.openFromFile("./sound/bgm1.wav"))
-		printf("cannot open bgm1.wav");
+	if(!bgm.openFromFile("./sound/victory.wav"))
+		printf("cannot open victory.wav");
 	bgm.setVolume(25.0);
 }
 
@@ -229,7 +252,7 @@ void Game::gameRunning(){
 			timer_flag[0]=false;
 		}
 		else if(p1_item2_t > 0){
-			print_timer(&timer[0], &font, p1_item2_t, 0, 0);
+			print_timer(&timer[0], &font, p1_item2_t, 60, 225);
 			timer_flag[0]=true;			
 		}
 		if(p1_item3_t > delay){
@@ -240,7 +263,7 @@ void Game::gameRunning(){
 			timer_flag[1]=false;
 		}
 		else if(p1_item3_t > 0){
-			print_timer(&timer[1], &font, p1_item3_t, 0, 100);			
+			print_timer(&timer[1], &font, p1_item3_t, 60, 290);			
 			timer_flag[1]=true;
 		}
 		if(p2_item2_t > delay){
@@ -251,7 +274,7 @@ void Game::gameRunning(){
 			timer_flag[2]=false;
 		}
 		else if(p2_item2_t > 0){
-			print_timer(&timer[2], &font, p2_item2_t, 0, 200);			
+			print_timer(&timer[2], &font, p2_item2_t, 400, 555);			
 			timer_flag[2]=true;
 		}
 		if(p2_item3_t > delay){
@@ -262,7 +285,7 @@ void Game::gameRunning(){
 			timer_flag[3]=false;
 		}
 		else if(p2_item3_t > 0){
-			print_timer(&timer[3], &font, p2_item3_t, 0, 300);			
+			print_timer(&timer[3], &font, p2_item3_t, 400, 620);			
 			timer_flag[3]=true;
 		}
 		object_draw();
@@ -378,9 +401,24 @@ void Game::receiveKeyinputs(){
 
 void Game::object_draw(){
 	window.clear(sf::Color::Black);
-	window.draw(sprite1);
-	window.draw(sprite2);
-	window.draw(s_bomb);
+	window.draw(p1_item_slot);
+	window.draw(p2_item_slot);
+	//window.draw(p1_s_3bomb);
+	int item_num = p1.get_Paddle_item(ITEM1);
+	printf("item_num : %d\n", item_num);
+	switch(item_num){
+		case 1: window.draw(p1_s_1bomb); break;
+		case 2: window.draw(p1_s_2bomb); break;
+		case 3: window.draw(p1_s_3bomb); break;
+		default: break;
+	}
+	switch(p2.get_Paddle_item(ITEM1)){
+		case 1: window.draw(p2_s_1bomb); break;
+		case 2: window.draw(p2_s_2bomb); break;
+		case 3: window.draw(p2_s_3bomb); break;
+		default: break;
+	}
+
 	sf::Font font;
 	font.loadFromFile("NanumGothic.ttf");
 	sf::Text text, p1_control, p2_control;
@@ -760,34 +798,20 @@ void Game::p1_get_item(Brick &brick){
 	int item = brick.get_Brick_item();
 
 	switch(item){
-		case 1:
-			p1.set_Paddle_item(ITEM3, 3);
-			break;
-		case 2:
-			p1.set_Paddle_item(ITEM2, 3);
-			break;
-		case 3:
-			p1.set_Paddle_item(ITEM1, 10);
-			break;
-		default:
-			break;		
+		case 1:	p1.set_Paddle_item(ITEM3, 3); break;
+		case 2:	p1.set_Paddle_item(ITEM2, 3); break;
+		case 3:	p1.set_Paddle_item(ITEM1, 3); break;
+		default: break;		
 	}
 }
 void Game::p2_get_item(Brick &brick){
 	int item = brick.get_Brick_item();
 
 	switch(item){
-		case 1:
-			p2.set_Paddle_item(ITEM3, 3);
-			break;
-		case 2:
-			p2.set_Paddle_item(ITEM2, 3);
-			break;
-		case 3:
-			p2.set_Paddle_item(ITEM1, 10);
-			break;
-		default:
-			break;		
+		case 1:	p2.set_Paddle_item(ITEM3, 3); break;
+		case 2:	p2.set_Paddle_item(ITEM2, 3); break;
+		case 3:	p2.set_Paddle_item(ITEM1, 3); break;
+		default: break;		
 	}
 }
 
@@ -833,7 +857,6 @@ void startset(sf::Text* text1, sf::Text* text2, sf::Text* prod, sf::Text* start,
 	text2->setString("BREAKER");
 	prod->setString("Prod by 3-codiots");
 	start->setString("Press SpaceBar To Start !");
-
 
 	text1->setFont(*font1);
 	text2->setFont(*font1);
