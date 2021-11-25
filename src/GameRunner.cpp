@@ -38,6 +38,25 @@ Game::Game(int w, int h){
 	soundBomb.setLoop(false);
 	soundBomb.setVolume(50.0);
 
+	p1_item.loadFromFile("image/P1_item.png");
+	p1_item.setSmooth(true);
+	sprite1.setTexture(p1_item);
+	sprite1.scale(0.5f,0.5f);
+	sprite1.setPosition(0.f,120.f);
+
+
+	p2_item.loadFromFile("image/P2_item.png");
+	p2_item.setSmooth(true);
+	sprite2.setTexture(p2_item);
+	sprite2.scale(0.5f,0.5f);
+	sprite2.setPosition(424.f,450.f);
+
+	bomb.loadFromFile("image/3bombs.jpg");
+	bomb.setSmooth(true);
+	s_bomb.setTexture(bomb);
+	s_bomb.scale(0.15f,0.15f);
+	s_bomb.setPosition(0.f,135.f);
+	
 	// Bricks
 	float brick_width = w / (BRICKS_PER_ROW * 1.1);
 	float brick_height = brick_width * 0.4;
@@ -359,7 +378,9 @@ void Game::receiveKeyinputs(){
 
 void Game::object_draw(){
 	window.clear(sf::Color::Black);
-
+	window.draw(sprite1);
+	window.draw(sprite2);
+	window.draw(s_bomb);
 	sf::Font font;
 	font.loadFromFile("NanumGothic.ttf");
 	sf::Text text, p1_control, p2_control;

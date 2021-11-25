@@ -58,6 +58,12 @@ private:
 	// Bomb(item)
 	sf::SoundBuffer bufferBomb;
 	sf::Sound soundBomb;
+	sf::Texture p1_item;
+	sf::Texture p2_item;
+	sf::Texture bomb;
+	sf::Sprite sprite1;
+	sf::Sprite sprite2;
+	sf::Sprite s_bomb;
 
 	// Ball
 	std::vector<Ball> balls;
