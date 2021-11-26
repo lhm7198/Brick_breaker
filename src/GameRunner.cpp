@@ -39,14 +39,14 @@ Game::Game(int w, int h){
 	soundBomb.setVolume(50.0);
 
 	// item_slot
-	p1_item.loadFromFile("image/P1_item.png");
+	p1_item.loadFromFile("./image/P1_item.png");
 	p1_item.setSmooth(true);
 	p1_item_slot.setTexture(p1_item);
 	p1_item_slot.scale(0.5f,0.5f);
 	p1_item_slot.setPosition(0.f,120.f);
 
 
-	p2_item.loadFromFile("image/P2_item.png");
+	p2_item.loadFromFile("./image/P2_item.png");
 	p2_item.setSmooth(true);
 	p2_item_slot.setTexture(p2_item);
 	p2_item_slot.scale(0.5f,0.5f);
@@ -185,11 +185,6 @@ Game::Game(int w, int h){
 	p2.set_Paddle_position(w*0.5 - paddle_width/2, h*0.8 - paddle_height);
 	p2.set_Paddle_speedX(0);
 	p2.set_Paddle_color();
-
-	/*p1.set_Paddle_item(ITEM3, 10);
-	p2.set_Paddle_item(ITEM3, 10);
-	p1.set_Paddle_item(ITEM1, 10);
-	p2.set_Paddle_item(ITEM1, 10);*/
 
 	if(!bufferPaddle.loadFromFile("./sound/collision.wav"))
 		printf("cannot play");
@@ -353,6 +348,8 @@ void Game::gameRunning(){
 		window.display();
 	}
 
+	bgm.play();
+
 	while(window.isOpen() && is_game_end){
 		while(window.pollEvent(event)){
 			if(event.type == sf::Event::Closed){
@@ -361,7 +358,7 @@ void Game::gameRunning(){
 		}
 
 		sf::Font font;
-		font.loadFromFile("NanumGothic.ttf");
+		font.loadFromFile("RixVideoGame Bold.ttf");
 		sf::Text text1, text2;
 
 		window.clear(sf::Color::Black);
@@ -987,28 +984,28 @@ void startgame(sf::Text* text, sf::Text* p1_control, sf::Text* p2_control, sf::F
 void player1_win(sf::Text* text1, sf::Text* text2, sf::Font* font){
 	text1->setString("Congratulations!");
 	text1->setFont(*font);
-	text1->setCharacterSize(30);
+	text1->setCharacterSize(50);
 	text1->setFillColor(sf::Color::Yellow);
-	text1->setPosition(100.f, 450.f);
+	text1->setPosition(100.f, 325.f);
 
-	text2->setString("PLAYER1 WINS");
+	text2->setString("PLAYER 1 WINS");
 	text2->setFont(*font);
-	text2->setCharacterSize(30);
+	text2->setCharacterSize(40);
 	text2->setFillColor(sf::Color::White);
-	text2->setPosition(100.f, 600.f);
+	text2->setPosition(140.f, 450.f);
 }
 void player2_win(sf::Text* text1, sf::Text* text2, sf::Font* font){
 	text1->setString("Congratulations!");
 	text1->setFont(*font);
-	text1->setCharacterSize(30);
+	text1->setCharacterSize(50);
 	text1->setFillColor(sf::Color::Yellow);
-	text1->setPosition(100.f, 450.f);
+	text1->setPosition(100.f, 325.f);
 
-	text2->setString("PLAYER2 WINS");
+	text2->setString("PLAYER 2 WINS");
 	text2->setFont(*font);
-	text2->setCharacterSize(30);
+	text2->setCharacterSize(40);
 	text2->setFillColor(sf::Color::White);
-	text2->setPosition(100.f, 600.f);
+	text2->setPosition(140.f, 450.f);
 }
 void print_timer(sf::Text* timer, sf::Font* font, float time, float x, float y){
 	int t = 10-time;
