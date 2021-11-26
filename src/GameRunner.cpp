@@ -237,8 +237,8 @@ void Game::gameStart(){
 
 		sf::Font font1;
 		sf::Font font2;
-		font1.loadFromFile("RixVideoGame Bold.ttf");
-		font2.loadFromFile("NanumGothic.ttf");
+		font1.loadFromFile("./font/RixVideoGame Bold.ttf");
+		font2.loadFromFile("./font/NanumGothic.ttf");
 		sf::Text text1, text2, prod, start;
 		startset(&text1, &text2, &prod, &start, &font1, &font2);
 
@@ -292,7 +292,7 @@ void Game::gameRunning(){
 		}
 
 		sf::Font font;
-		font.loadFromFile("NanumGothic.ttf");
+		font.loadFromFile("./font/NanumGothic.ttf");
 		sf::Text timer[4];
 
 		if(p1_item2_t > delay){
@@ -358,7 +358,7 @@ void Game::gameRunning(){
 		}
 
 		sf::Font font;
-		font.loadFromFile("RixVideoGame Bold.ttf");
+		font.loadFromFile("./font/RixVideoGame Bold.ttf");
 		sf::Text text1, text2;
 
 		window.clear(sf::Color::Black);
@@ -498,7 +498,7 @@ void Game::object_draw(){
 	}
 
 	sf::Font font;
-	font.loadFromFile("NanumGothic.ttf");
+	font.loadFromFile("./font/NanumGothic.ttf");
 	sf::Text text, p1_control, p2_control;
 	startgame(&text, &p1_control, &p2_control, &font);
 
