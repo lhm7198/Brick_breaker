@@ -10,16 +10,12 @@
 #define BALL_H
 
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include "Paddle.h"
-#include "Brick.h"
 
 class Ball : public sf::CircleShape{
 private:
 	float ball_radius;
 	float ball_speedX;
 	float ball_speedY;
-	float gap;
 	bool active;
 public:
 	Ball();

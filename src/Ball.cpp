@@ -12,7 +12,6 @@ Ball::Ball() : CircleShape(0){
 	ball_radius = 0;
 	ball_speedX = 0;
 	ball_speedY = 0;
-	gap = 0;
 	active = false;
 };
 
