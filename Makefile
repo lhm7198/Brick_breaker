@@ -6,7 +6,6 @@ LINKER	=	g++
 SRCDIR		=	src
 OBJDIR		=	obj
 BINDIR		=	bin
-INCLUDE_DIR	=	/home/lhm7198/SFML/SFML-2.5.1/include/
 LIBS		=	-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
@@ -19,7 +18,7 @@ $(BINDIR)/$(TARGET) : $(OBJECTS)
 	@echo "Linking complete!"
 
 $(OBJECTS) : $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	@$(CC) -c $< -o $@ -I INCLUDE_DIR
+	@$(CC) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
 .PHONY: clean

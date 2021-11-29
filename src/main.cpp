@@ -6,7 +6,6 @@
 *		  Hyeonmin Lee (2016310191)
 */
 
-#include <SFML/Graphics.hpp>
 #include "GameRunner.h"
 
 int main(){
